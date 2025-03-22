@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A responsive color picker tool for PDF websites.">
+  <meta name="keywords" content="color picker, PDF tools, HEX, RGB, annotations">
+  <meta name="author" content="Your Name">
+  <title>Color Picker Tool</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #a8e6cf, #dcedc1);
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    .color-picker {
+      background: rgba(255, 255, 255, 0.8);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 400px;
+      width: 100%;
+    }
+
+    .color-palette {
+      display: flex;
+      gap: 10px;
+      margin: 20px 0;
+      justify-content: center;
+    }
+
+    .color {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid #ccc;
+    }
+
+    .color-codes {
+      margin: 20px 0;
+    }
+
+    .color-codes input {
+      padding: 5px;
+      margin: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      width: 100px;
+      text-align: center;
+    }
+
+    .color-codes button {
+      padding: 5px 10px;
+      margin: 5px;
+      border: none;
+      border-radius: 5px;
+      background: #4CAF50;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .color-codes button:hover {
+      background: #45a049;
+    }
+
+    .preview-area {
+      margin: 20px 0;
+    }
+
+    .preview-box {
+      width: 100px;
+      height: 100px;
+      margin: 10px auto;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+    }
+
+    #apply-color {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      background: #2575fc;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    #apply-color:hover {
+      background: #1a5bbf;
+    }
+
+    .ad-container {
+      margin-top: 20px;
+    }
+
+    .file-input {
+      margin: 20px 0;
+    }
+
+    .text-area {
+      width: 100%;
+      height: 100px;
+      margin: 20px 0;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 600px) {
+      .color-picker {
+        padding: 10px;
+      }
+
+      .color {
+        width: 30px;
+        height: 30px;
+      }
+
+      .color-codes input {
+        width: 80px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="color-picker">
+    <!-- File Input -->
+    <div class="file-input">
+      <input type="file" id="file-input" accept=".txt,.doc,.docx,.pdf">
+    </div>
+
+    <!-- Text Area -->
+    <textarea class="text-area" id="text-area" placeholder="Upload a file to edit text color..."></textarea>
+
+    <!-- Color Wheel -->
+    <input type="color" id="color-wheel">
+
+    <!-- Predefined Palette -->
+    <div class="color-palette">
+      <div class="color" style="background: #FF0000;" data-hex="#FF0000"></div>
+      <div class="color" style="background: #00FF00;" data-hex="#00FF00"></div>
+      <div class="color" style="background: #0000FF;" data-hex="#0000FF"></div>
+      <!-- Add more colors -->
+    </div>
+
+    <!-- Color Codes -->
+    <div class="color-codes">
+      <label for="hex">HEX:</label>
+      <input type="text" id="hex" readonly>
+      <button onclick="copyHex()">Copy HEX</button>
+
+      <label for="rgb">RGB:</label>
+      <input type="text" id="rgb" readonly>
+      <button onclick="copyRGB()">Copy RGB</button>
+    </div>
+
+    <!-- Preview Area -->
+    <div class="preview-area">
+      <p>Preview:</p>
+      <div class="preview-box" id="preview-box"></div>
+    </div>
+
+    <!-- Apply Button -->
+    <button id="apply-color">Apply to Text</button>
+
+    <!-- Ad Placement -->
+    <div class="ad-container">
+      <!-- Google AdSense -->
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-YOUR_AD_UNIT_ID" crossorigin="anonymous"></script>
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-YOUR_AD_UNIT_ID"
+           data-ad-slot="YOUR_AD_SLOT_ID"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+  </div>
+
+  <script>
+    // Get elements
+    const colorWheel = document.getElementById('color-wheel');
+    const hexInput = document.getElementById('hex');
+    const rgbInput = document.getElementById('rgb');
+    const previewBox = document.getElementById('preview-box');
+    const fileInput = document.getElementById('file-input');
+    const textArea = document.getElementById('text-area');
+
+    // Update color on wheel change
+    colorWheel.addEventListener('input', () => {
+      const color = colorWheel.value;
+      updateColor(color);
+    });
+
+    // Update color on palette click
+    document.querySelectorAll('.color').forEach(color => {
+      color.addEventListener('click', () => {
+        const hex = color.getAttribute('data-hex');
+        updateColor(hex);
+      });
+    });
+
+    // Update color and preview
+    function updateColor(color) {
+      hexInput.value = color;
+      rgbInput.value = hexToRgb(color);
+      previewBox.style.backgroundColor = color;
+    }
+
+    // Convert HEX to RGB
+    function hexToRgb(hex) {
+      const r = parseInt(hex.slice(1, 3), 16);
+      const g = parseInt(hex.slice(3, 5), 16);
+      const b = parseInt(hex.slice(5, 7), 16);
+      return `rgb(${r}, ${g}, ${b})`;
+    }
+
+    // Copy HEX to clipboard
+    function copyHex() {
+      hexInput.select();
+      document.execCommand('copy');
+      alert('HEX value copied!');
+    }
+
+    // Copy RGB to clipboard
+    function copyRGB() {
+      rgbInput.select();
+      document.execCommand('copy');
+      alert('RGB value copied!');
+    }
+
+    // Apply color to text
+    document.getElementById('apply-color').addEventListener('click', () => {
+      const color = hexInput.value;
+      textArea.style.color = color;
+    });
+
+    // Handle file input
+    fileInput.addEventListener('change', (event) => {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          textArea.value = e.target.result;
+        };
+        reader.readAsText(file);
+      }
+    });
+  </script>
+</body>
+</html>
