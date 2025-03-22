@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Convert your images online with our fully responsive image converter tool. Optimize images for web use with adjustable formats.">
+    <meta name="keywords" content="image converter, convert images, image optimizer, convert images online">
+    <meta name="author" content="Your Name">
+    <title>Image Converter Tool - Convert Your Images Online</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        header p {
+            margin: 10px 0 0;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        main {
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Converter Tool Section */
+        #converter-tool {
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        #converter-tool input[type="file"] {
+            display: none;
+        }
+
+        #converter-tool label.file-label {
+            display: block;
+            background: #667eea;
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        #converter-tool label.file-label:hover {
+            background: #5a6fd1;
+        }
+
+        #converter-tool .format-select {
+            margin: 20px 0;
+        }
+
+        #converter-tool .format-select label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        #converter-tool .format-select select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        #converter-tool #convert-btn {
+            display: block;
+            width: 100%;
+            background: #667eea;
+            color: #fff;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        #converter-tool #convert-btn:hover {
+            background: #5a6fd1;
+        }
+
+        #output {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        #output img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #download-btn {
+            display: none;
+            margin-top: 15px;
+            background: #28a745;
+            color: #fff;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        #download-btn:hover {
+            background: #218838;
+        }
+
+        /* Advertisement Section */
+        #advertisement {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+            text-align: center;
+            padding: 15px;
+            margin-top: 40px;
+            box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            header p {
+                font-size: 1rem;
+            }
+
+            #converter-tool {
+                padding: 20px;
+            }
+        }
+    </style>
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-YOUR_AD_SENSE_ID" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header>
+        <h1>Image Converter Tool</h1>
+        <p>Convert your images online with adjustable formats.</p>
+    </header>
+
+    <main>
+        <section id="converter-tool">
+            <label for="image-input" class="file-label">Choose an Image</label>
+            <input type="file" id="image-input" accept="image/*">
+            <div class="format-select">
+                <label for="format">Select Output Format:</label>
+                <select id="format">
+                    <option value="image/jpeg">JPEG</option>
+                    <option value="image/png">PNG</option>
+                    <option value="image/webp">WebP</option>
+                </select>
+            </div>
+            <button id="convert-btn">Convert Image</button>
+            <div id="output">
+                <h3>Converted Image</h3>
+                <img id="converted-image" src="#" alt="Converted Image" style="display: none;">
+            </div>
+            <button id="download-btn">Download Converted Image</button>
+        </section>
+
+        <!-- Advertisement Space -->
+        <section id="advertisement">
+            <!-- Google AdSense Ad Unit -->
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-YOUR_AD_SENSE_ID"
+                 data-ad-slot="YOUR_AD_UNIT_ID"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Image Converter Tool. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Convert the image and show the converted image after clicking the "Convert Image" button
+        document.getElementById('convert-btn').addEventListener('click', function () {
+            const file = document.getElementById('image-input').files[0];
+            const format = document.getElementById('format').value;
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const img = new Image();
+                    img.src = e.target.result;
+
+                    img.onload = function () {
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+
+                        // Set canvas dimensions to the image's dimensions
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+
+                        // Draw the image on the canvas
+                        ctx.drawImage(img, 0, 0);
+
+                        // Convert the image to the selected format
+                        const convertedImage = canvas.toDataURL(format);
+                        const convertedImageElement = document.getElementById('converted-image');
+                        convertedImageElement.src = convertedImage;
+                        convertedImageElement.style.display = 'block';
+
+                        // Show download button
+                        const downloadBtn = document.getElementById('download-btn');
+                        downloadBtn.style.display = 'block';
+                        downloadBtn.onclick = function () {
+                            const link = document.createElement('a');
+                            link.href = convertedImage;
+                            link.download = `converted_${file.name.split('.')[0]}.${format.split('/')[1]}`;
+                            link.click();
+                        };
+                    };
+                };
+                reader.readAsDataURL(file);
+            } else {
+                alert('Please select an image to convert.');
+            }
+        });
+    </script>
+</body>
+</html>
