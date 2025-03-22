@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Convert your PDF files to Word documents online with our fully responsive PDF to Word converter tool. Optimize files for easy editing.">
+    <meta name="keywords" content="PDF to Word, convert PDF to Word, PDF converter, online PDF tools">
+    <meta name="author" content="Your Name">
+    <title>PDF to Word Converter - Convert PDF Files Online</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        header p {
+            margin: 10px 0 0;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        main {
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Converter Tool Section */
+        #converter-tool {
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        #converter-tool input[type="file"] {
+            display: none;
+        }
+
+        #converter-tool label.file-label {
+            display: block;
+            background: #667eea;
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        #converter-tool label.file-label:hover {
+            background: #5a6fd1;
+        }
+
+        #converter-tool #file-name {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #666;
+            text-align: center;
+        }
+
+        #converter-tool #convert-btn {
+            display: block;
+            width: 100%;
+            background: #667eea;
+            color: #fff;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin-top: 20px;
+        }
+
+        #converter-tool #convert-btn:hover {
+            background: #5a6fd1;
+        }
+
+        #output {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        #output a {
+            display: inline-block;
+            background: #28a745;
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: background 0.3s ease;
+        }
+
+        #output a:hover {
+            background: #218838;
+        }
+
+        /* Advertisement Section */
+        #advertisement {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+            text-align: center;
+            padding: 15px;
+            margin-top: 40px;
+            box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            header p {
+                font-size: 1rem;
+            }
+
+            #converter-tool {
+                padding: 20px;
+            }
+        }
+    </style>
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-YOUR_AD_SENSE_ID" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header>
+        <h1>PDF to Word Converter</h1>
+        <p>Convert your PDF files to Word documents online.</p>
+    </header>
+
+    <main>
+        <section id="converter-tool">
+            <label for="pdf-input" class="file-label">Choose a PDF File</label>
+            <input type="file" id="pdf-input" accept="application/pdf">
+            <div id="file-name"></div>
+            <button id="convert-btn">Convert to Word</button>
+            <div id="output"></div>
+        </section>
+
+        <!-- Advertisement Space -->
+        <section id="advertisement">
+            <!-- Google AdSense Ad Unit -->
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-YOUR_AD_SENSE_ID"
+                 data-ad-slot="YOUR_AD_UNIT_ID"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 PDF to Word Converter. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Display the selected file name
+        document.getElementById('pdf-input').addEventListener('change', function (e) {
+            const fileName = e.target.files[0]?.name || 'No file selected';
+            document.getElementById('file-name').textContent = `Selected File: ${fileName}`;
+        });
+
+        // Handle file conversion
+        document.getElementById('convert-btn').addEventListener('click', function () {
+            const fileInput = document.getElementById('pdf-input');
+            const file = fileInput.files[0];
+
+            if (file) {
+                // Show loading message
+                const output = document.getElementById('output');
+                output.innerHTML = '<p>Converting... Please wait.</p>';
+
+                // Simulate file conversion (replace with actual API call)
+                setTimeout(() => {
+                    // Replace this with your API call to convert PDF to Word
+                    // Example: Use a service like CloudConvert or PDF.co
+                    const downloadLink = 'https://example.com/converted-file.docx'; // Replace with actual download link
+                    const convertedFileName = file.name.replace('.pdf', '.docx'); // Generate converted file name
+                    output.innerHTML = `
+                        <p>Conversion complete!</p>
+                        <p>Converted File: ${convertedFileName}</p>
+                        <a href="${downloadLink}" download="${convertedFileName}">Download Word File</a>
+                    `;
+                }, 3000); // Simulate a 3-second delay for conversion
+            } else {
+                alert('Please select a PDF file to convert.');
+            }
+        });
+    </script>
+</body>
+</html>
