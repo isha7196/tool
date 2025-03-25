@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Free online Excel editor. Edit your Excel files directly in your browser without installation. Supports XLSX, XLS, and CSV formats.">
+    <meta name="keywords" content="Excel editor, online Excel, edit XLSX, spreadsheet editor, Excel online, CSV editor">
+    <meta name="author" content="Your Name">
+    <meta name="robots" content="index, follow">
+    <title>Online Excel Editor | Edit Spreadsheets in Your Browser</title>
+    <link rel="canonical" href="https://yourwebsite.com/excel-editor">
+    <!-- SheetJS library for Excel functionality -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <style>
+        /* Base Styles */
+        :root {
+            --primary-color: #217346;
+            --secondary-color: #1a5e3a;
+            --light-gray: #f5f5f5;
+            --medium-gray: #ddd;
+            --dark-gray: #333;
+            --text-color: #333;
+            --header-bg: #2e7d32;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--light-gray);
+        }
+        
+        /* Header */
+        header {
+            background-color: var(--header-bg);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        /* Editor Section */
+        .editor-section {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .editor-title {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        /* Editor Controls */
+        .editor-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            justify-content: center;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        
+        /* Excel Table */
+        .excel-container {
+            width: 100%;
+            overflow-x: auto;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--medium-gray);
+            border-radius: 4px;
+        }
+        
+        #excelTable {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        #excelTable th, 
+        #excelTable td {
+            border: 1px solid var(--medium-gray);
+            padding: 0.5rem;
+            min-width: 100px;
+        }
+        
+        #excelTable th {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            position: sticky;
+            top: 0;
+        }
+        
+        #excelTable td {
+            background-color: white;
+        }
+        
+        #excelTable td:focus {
+            outline: 2px solid var(--primary-color);
+        }
+        
+        /* Ad Section */
+        .ad-section {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+        
+        .ad-title {
+            color: var(--medium-gray);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark-gray);
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .editor-controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            #excelTable th, 
+            #excelTable td {
+                padding: 0.25rem;
+                font-size: 0.9rem;
+            }
+        }
+        
+        /* Loading Indicator */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 1rem;
+        }
+        
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid var(--primary-color);
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <h1>Online Excel Editor</h1>
+        <p>Edit your Excel files directly in your browser</p>
+    </header>
+    
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Editor Section -->
+        <section class="editor-section">
+            <h2 class="editor-title">Excel File Editor</h2>
+            
+            <div class="editor-controls">
+                <button id="loadFileBtn" class="btn btn-primary">Load Excel File</button>
+                <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" style="display: none;">
+                <button id="downloadBtn" class="btn btn-secondary" disabled>Download File</button>
+                <button id="addRowBtn" class="btn btn-outline" disabled>Add Row</button>
+                <button id="addColumnBtn" class="btn btn-outline" disabled>Add Column</button>
+            </div>
+            
+            <div class="loading" id="loadingIndicator">
+                <div class="spinner"></div>
+                <p>Processing file...</p>
+            </div>
+            
+            <div class="excel-container">
+                <table id="excelTable">
+                    <thead>
+                        <tr>
+                            <th colspan="10" style="text-align: center;">No file loaded</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="10" style="text-align: center;">Please load an Excel file to begin editing</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="editor-controls">
+                <button id="clearBtn" class="btn btn-outline">Clear Editor</button>
+                <select id="formatSelect" class="btn-outline" style="padding: 0.75rem;">
+                    <option value="xlsx">XLSX (Excel Workbook)</option>
+                    <option value="csv">CSV (Comma Separated)</option>
+                    <option value="xls">XLS (Excel 97-2003)</option>
+                </select>
+            </div>
+        </section>
+        
+        <!-- Ad Section -->
+        <div class="ad-section">
+            <div class="ad-title">Advertisement</div>
+            <!-- Google AdSense Ad Unit -->
+            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-YOUR_AD_SENSE_ID" crossorigin="anonymous"></script>
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-YOUR_AD_SENSE_ID"
+                 data-ad-slot="YOUR_AD_SLOT_ID"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2023 Online Excel Editor. All rights reserved.</p>
+    </footer>
+    
+    <!-- JavaScript -->
+    <script>
+        // DOM Elements
+        const loadFileBtn = document.getElementById('loadFileBtn');
+        const fileInput = document.getElementById('fileInput');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const addRowBtn = document.getElementById('addRowBtn');
+        const addColumnBtn = document.getElementById('addColumnBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const excelTable = document.getElementById('excelTable');
+        const formatSelect = document.getElementById('formatSelect');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        
+        // Variables
+        let workbook = null;
+        let currentSheet = null;
+        let currentSheetName = '';
+        
+        // Event Listeners
+        loadFileBtn.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', handleFileUpload);
+        downloadBtn.addEventListener('click', downloadFile);
+        addRowBtn.addEventListener('click', addRow);
+        addColumnBtn.addEventListener('click', addColumn);
+        clearBtn.addEventListener('click', clearEditor);
+        
+        // Functions
+        function handleFileUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            showLoading(true);
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    workbook = XLSX.read(data, { type: 'array' });
+                    
+                    // Get the first sheet
+                    currentSheetName = workbook.SheetNames[0];
+                    currentSheet = workbook.Sheets[currentSheetName];
+                    
+                    // Convert to HTML table
+                    displaySheet(currentSheet);
+                    
+                    // Enable buttons
+                    downloadBtn.disabled = false;
+                    addRowBtn.disabled = false;
+                    addColumnBtn.disabled = false;
+                    
+                    showLoading(false);
+                } catch (error) {
+                    console.error("Error processing file:", error);
+                    alert("Error processing file. Please make sure it's a valid Excel file.");
+                    showLoading(false);
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+        
+        function displaySheet(sheet) {
+            const html = XLSX.utils.sheet_to_html(sheet, { editable: true });
+            excelTable.innerHTML = html;
+            
+            // Make cells editable
+            const cells = excelTable.querySelectorAll('td');
+            cells.forEach(cell => {
+                cell.addEventListener('input', updateSheetData);
+                cell.setAttribute('contenteditable', 'true');
+            });
+            
+            // Make sure we have at least one row and column
+            if (excelTable.rows.length < 2) {
+                addRow();
+            }
+            if (excelTable.rows[0].cells.length < 2) {
+                addColumn();
+            }
+        }
+        
+        function updateSheetData() {
+            if (!currentSheet) return;
+            
+            // Convert HTML table back to worksheet
+            const newSheet = XLSX.utils.table_to_sheet(excelTable);
+            
+            // Update our current sheet reference
+            currentSheet = newSheet;
+            
+            // Update the workbook
+            workbook.Sheets[currentSheetName] = currentSheet;
+        }
+        
+        function downloadFile() {
+            if (!workbook || !currentSheet) return;
+            
+            showLoading(true);
+            
+            try {
+                // Update the sheet data before downloading
+                updateSheetData();
+                
+                // Get the selected format
+                const format = formatSelect.value;
+                
+                // Generate file
+                XLSX.writeFile(workbook, `edited_file.${format}`);
+                
+                showLoading(false);
+            } catch (error) {
+                console.error("Error generating file:", error);
+                alert("Error generating file. Please try again.");
+                showLoading(false);
+            }
+        }
+        
+        function addRow() {
+            const tbody = excelTable.querySelector('tbody');
+            if (!tbody) return;
+            
+            const rowCount = tbody.rows.length;
+            const colCount = tbody.rows[0]?.cells.length || 1;
+            
+            const newRow = document.createElement('tr');
+            for (let i = 0; i < colCount; i++) {
+                const cell = document.createElement('td');
+                cell.setAttribute('contenteditable', 'true');
+                cell.addEventListener('input', updateSheetData);
+                newRow.appendChild(cell);
+            }
+            
+            tbody.appendChild(newRow);
+            updateSheetData();
+        }
+        
+        function addColumn() {
+            const thead = excelTable.querySelector('thead');
+            const tbody = excelTable.querySelector('tbody');
+            if (!thead || !tbody) return;
+            
+            // Add column to header
+            const headerRow = thead.rows[0];
+            const newHeaderCell = document.createElement('th');
+            newHeaderCell.textContent = String.fromCharCode(65 + headerRow.cells.length - 1);
+            headerRow.appendChild(newHeaderCell);
+            
+            // Add column to each row
+            const rows = tbody.rows;
+            for (let i = 0; i < rows.length; i++) {
+                const cell = document.createElement('td');
+                cell.setAttribute('contenteditable', 'true');
+                cell.addEventListener('input', updateSheetData);
+                rows[i].appendChild(cell);
+            }
+            
+            updateSheetData();
+        }
+        
+        function clearEditor() {
+            excelTable.innerHTML = `
+                <thead>
+                    <tr>
+                        <th colspan="10" style="text-align: center;">No file loaded</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="10" style="text-align: center;">Please load an Excel file to begin editing</td>
+                    </tr>
+                </tbody>
+            `;
+            
+            workbook = null;
+            currentSheet = null;
+            currentSheetName = '';
+            
+            downloadBtn.disabled = true;
+            addRowBtn.disabled = true;
+            addColumnBtn.disabled = true;
+            
+            fileInput.value = '';
+        }
+        
+        function showLoading(show) {
+            loadingIndicator.style.display = show ? 'block' : 'none';
+        }
+        
+        // Initialize
+        clearEditor();
+    </script>
+</body>
+</html>
