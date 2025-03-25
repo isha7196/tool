@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Free online document scanner tool. Scan your documents, receipts, and notes directly in your browser. No installation required.">
+    <meta name="keywords" content="document scanner, online scanner, scan documents, PDF scanner, receipt scanner">
+    <meta name="author" content="Your Name">
+    <meta name="robots" content="index, follow">
+    <title>Online Document Scanner | Scan PDFs & Images for Free</title>
+    <link rel="canonical" href="https://yourwebsite.com/document-scanner">
+    <style>
+        /* Base Styles */
+        :root {
+            --primary-color: #4285f4;
+            --secondary-color: #34a853;
+            --error-color: #ea4335;
+            --light-gray: #f5f5f5;
+            --medium-gray: #666;
+            --dark-gray: #333;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark-gray);
+            background-color: var(--light-gray);
+        }
+        
+        /* Header */
+        header {
+            background-color: var(--dark-gray);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        /* Scanner Section */
+        .scanner-section {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .scanner-title {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        /* Scanner Controls */
+        .scanner-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            justify-content: center;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        
+        /* Scanner Preview */
+        .scanner-preview {
+            width: 100%;
+            min-height: 300px;
+            border: 2px dashed var(--medium-gray);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .scanner-preview img {
+            max-width: 100%;
+            max-height: 400px;
+            display: none;
+        }
+        
+        .scanner-preview video {
+            width: 100%;
+            max-height: 400px;
+            display: none;
+            background-color: black;
+        }
+        
+        .scanner-preview canvas {
+            display: none;
+            max-width: 100%;
+        }
+        
+        .placeholder-text {
+            text-align: center;
+            color: var(--medium-gray);
+        }
+        
+        /* Scanner Options */
+        .scanner-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .option-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .option-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .option-group select, 
+        .option-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        /* Results Section */
+        .results-section {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .results-title {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .scanned-results {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .scanned-item {
+            flex: 1;
+            min-width: 250px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 1rem;
+            position: relative;
+        }
+        
+        .scanned-item img {
+            width: 100%;
+            height: auto;
+            margin-bottom: 1rem;
+        }
+        
+        .download-btn {
+            display: block;
+            width: 100%;
+            padding: 0.5rem;
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-top: 0.5rem;
+        }
+        
+        /* Ad Section */
+        .ad-section {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+        
+        .ad-title {
+            color: var(--medium-gray);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark-gray);
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .scanner-controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .scanner-options {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <h1>Online Document Scanner</h1>
+        <p>Scan your documents, receipts, and notes directly in your browser</p>
+    </header>
+    
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Scanner Section -->
+        <section class="scanner-section">
+            <h2 class="scanner-title">Scan Your Document</h2>
+            
+            <div class="scanner-controls">
+                <button id="startCameraBtn" class="btn btn-primary">Start Camera</button>
+                <button id="captureBtn" class="btn btn-secondary" disabled>Capture</button>
+                <button id="uploadBtn" class="btn btn-outline">Upload Document</button>
+                <input type="file" id="fileInput" accept="image/*" style="display: none;">
+            </div>
+            
+            <div class="scanner-preview" id="scannerPreview">
+                <div class="placeholder-text">
+                    <p>Click "Start Camera" to begin scanning or "Upload Document" to scan an existing file</p>
+                </div>
+                <video id="scannerVideo" autoplay playsinline></video>
+                <canvas id="scannerCanvas"></canvas>
+                <img id="scannedImage" alt="Scanned document">
+            </div>
+            
+            <div class="scanner-options">
+                <div class="option-group">
+                    <label for="qualitySelect">Image Quality</label>
+                    <select id="qualitySelect">
+                        <option value="high">High</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="low">Low</option>
+                    </select>
+                </div>
+                
+                <div class="option-group">
+                    <label for="formatSelect">Output Format</label>
+                    <select id="formatSelect">
+                        <option value="jpeg" selected>JPEG</option>
+                        <option value="png">PNG</option>
+                        <option value="pdf">PDF</option>
+                    </select>
+                </div>
+                
+                <div class="option-group">
+                    <label for="dpiSelect">DPI (Resolution)</label>
+                    <select id="dpiSelect">
+                        <option value="300">300 DPI (High Quality)</option>
+                        <option value="200" selected>200 DPI (Standard)</option>
+                        <option value="150">150 DPI (Web Quality)</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="scanner-controls">
+                <button id="scanBtn" class="btn btn-primary" disabled>Scan Document</button>
+                <button id="resetBtn" class="btn btn-outline">Reset</button>
+            </div>
+        </section>
+        
+        <!-- Results Section -->
+        <section class="results-section" id="resultsSection" style="display: none;">
+            <h2 class="results-title">Your Scanned Documents</h2>
+            <div class="scanned-results" id="scannedResults">
+                <!-- Scanned documents will appear here -->
+            </div>
+        </section>
+        
+        <!-- Single Ad Section at Bottom -->
+        <div class="ad-section">
+            <div class="ad-title">Advertisement</div>
+            <!-- Google AdSense Ad Unit -->
+            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-YOUR_AD_SENSE_ID" crossorigin="anonymous"></script>
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-YOUR_AD_SENSE_ID"
+                 data-ad-slot="YOUR_AD_SLOT_ID"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2023 Online Document Scanner. All rights reserved.</p>
+    </footer>
+    
+    <!-- JavaScript -->
+    <script>
+        // DOM Elements
+        const startCameraBtn = document.getElementById('startCameraBtn');
+        const captureBtn = document.getElementById('captureBtn');
+        const uploadBtn = document.getElementById('uploadBtn');
+        const fileInput = document.getElementById('fileInput');
+        const scannerVideo = document.getElementById('scannerVideo');
+        const scannerCanvas = document.getElementById('scannerCanvas');
+        const scannedImage = document.getElementById('scannedImage');
+        const scanBtn = document.getElementById('scanBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const scannerPreview = document.getElementById('scannerPreview');
+        const resultsSection = document.getElementById('resultsSection');
+        const scannedResults = document.getElementById('scannedResults');
+        
+        // Variables
+        let stream = null;
+        let scannedDocuments = [];
+        
+        // Event Listeners
+        startCameraBtn.addEventListener('click', startCamera);
+        captureBtn.addEventListener('click', captureImage);
+        uploadBtn.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', handleFileUpload);
+        scanBtn.addEventListener('click', processDocument);
+        resetBtn.addEventListener('click', resetScanner);
+        
+        // Functions
+        async function startCamera() {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { 
+                        facingMode: 'environment',
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 }
+                    },
+                    audio: false 
+                });
+                
+                scannerVideo.srcObject = stream;
+                scannerVideo.style.display = 'block';
+                document.querySelector('.placeholder-text').style.display = 'none';
+                
+                startCameraBtn.disabled = true;
+                captureBtn.disabled = false;
+                uploadBtn.disabled = true;
+                
+            } catch (err) {
+                console.error("Error accessing camera:", err);
+                alert("Could not access the camera. Please ensure you've granted camera permissions.");
+            }
+        }
+        
+        function captureImage() {
+            if (!stream) return;
+            
+            const context = scannerCanvas.getContext('2d');
+            scannerCanvas.width = scannerVideo.videoWidth;
+            scannerCanvas.height = scannerVideo.videoHeight;
+            context.drawImage(scannerVideo, 0, 0, scannerCanvas.width, scannerCanvas.height);
+            
+            scannerVideo.style.display = 'none';
+            scannedImage.src = scannerCanvas.toDataURL('image/jpeg', 0.8);
+            scannedImage.style.display = 'block';
+            
+            captureBtn.disabled = true;
+            scanBtn.disabled = false;
+        }
+        
+        function handleFileUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            if (!file.type.match('image.*')) {
+                alert('Please select an image file (JPEG, PNG)');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                scannedImage.src = event.target.result;
+                scannedImage.style.display = 'block';
+                document.querySelector('.placeholder-text').style.display = 'none';
+                
+                startCameraBtn.disabled = true;
+                captureBtn.disabled = true;
+                scanBtn.disabled = false;
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        function processDocument() {
+            const format = document.getElementById('formatSelect').value;
+            const quality = document.getElementById('qualitySelect').value;
+            const dpi = parseInt(document.getElementById('dpiSelect').value);
+            
+            // In a real implementation, you would process the image here
+            // For this demo, we'll just add it to the results
+            
+            const resultId = Date.now();
+            const resultItem = document.createElement('div');
+            resultItem.className = 'scanned-item';
+            resultItem.innerHTML = `
+                <img src="${scannedImage.src}" alt="Scanned document ${scannedDocuments.length + 1}">
+                <p>Format: ${format.toUpperCase()}</p>
+                <p>Quality: ${quality}</p>
+                <p>DPI: ${dpi}</p>
+                <a href="${scannedImage.src}" download="scanned-document-${resultId}.${format}" class="download-btn">Download</a>
+            `;
+            
+            scannedResults.appendChild(resultItem);
+            scannedDocuments.push({
+                id: resultId,
+                image: scannedImage.src,
+                format,
+                quality,
+                dpi
+            });
+            
+            resultsSection.style.display = 'block';
+            resetScanner();
+        }
+        
+        function resetScanner() {
+            // Stop camera stream if active
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                stream = null;
+            }
+            
+            // Reset UI elements
+            scannerVideo.srcObject = null;
+            scannerVideo.style.display = 'none';
+            scannedImage.src = '';
+            scannedImage.style.display = 'none';
+            document.querySelector('.placeholder-text').style.display = 'block';
+            
+            // Reset buttons
+            startCameraBtn.disabled = false;
+            captureBtn.disabled = true;
+            uploadBtn.disabled = false;
+            scanBtn.disabled = true;
+            
+            // Clear file input
+            fileInput.value = '';
+        }
+        
+        // Initialize
+        resetScanner();
+    </script>
+</body>
+</html>
