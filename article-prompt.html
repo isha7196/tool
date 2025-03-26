@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Article Prompt Generator</title>
+    <meta name="description" content="Generate creative writing prompts for articles, blog posts, and content pieces with advanced customization options.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4a6fa5;
+            --secondary-color: #166088;
+            --accent-color: #d16644;
+            --light-gray: #f5f5f5;
+            --dark-gray: #333;
+            --medium-gray: #757575;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            line-height: 1.6;
+            color: var(--dark-gray);
+            background-color: #f9f9f9;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+            margin-bottom: 30px;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .generator-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark-gray);
+        }
+        
+        select, input, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        select:focus, input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .checkbox-group input {
+            width: auto;
+            margin-right: 10px;
+        }
+        
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+        
+        .btn-generate {
+            background-color: var(--accent-color);
+            width: 100%;
+            font-size: 1.1rem;
+            padding: 15px;
+            margin-top: 20px;
+        }
+        
+        .btn-generate:hover {
+            background-color: #c05a3a;
+        }
+        
+        .btn-clear {
+            background-color: var(--danger-color);
+            margin-top: 10px;
+        }
+        
+        .btn-copy {
+            background-color: var(--secondary-color);
+        }
+        
+        .btn-save {
+            background-color: var(--success-color);
+        }
+        
+        .result-container {
+            margin-top: 30px;
+            display: none;
+        }
+        
+        .prompt-card {
+            background-color: var(--light-gray);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--primary-color);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .prompt-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .prompt-text {
+            color: var(--medium-gray);
+            line-height: 1.7;
+            white-space: pre-line;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .btn-copy, .btn-save {
+            padding: 8px 15px;
+            font-size: 0.9rem;
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 6px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: transform 0.3s, opacity 0.3s;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .ad-section {
+            background-color: var(--light-gray);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        footer {
+            background-color: var(--dark-gray);
+            color: white;
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 50px;
+            border-radius: 20px 20px 0 0;
+        }
+        
+        .saved-prompts {
+            margin-top: 30px;
+            display: none;
+        }
+        
+        .tab-container {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .tab.active {
+            border-bottom: 3px solid var(--primary-color);
+            font-weight: 500;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .word-count {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(0,0,0,0.1);
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            color: var(--medium-gray);
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .tagline {
+                font-size: 1rem;
+            }
+            
+            .generator-container {
+                padding: 20px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .btn-copy, .btn-save {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Advanced Article Prompt Generator</h1>
+            <p class="tagline">Spark your creativity with tailored writing prompts</p>
+        </div>
+    </header>
+    
+    <main class="container">
+        <div class="generator-container">
+            <div class="tab-container">
+                <div class="tab active" data-tab="generator">Prompt Generator</div>
+                <div class="tab" data-tab="saved">Saved Prompts</div>
+            </div>
+            
+            <div id="generator-tab" class="tab-content active">
+                <form id="prompt-form">
+                    <div class="form-group">
+                        <label for="topic">Main Topic or Keyword</label>
+                        <input type="text" id="topic" placeholder="e.g., Digital marketing, Healthy eating, AI technology" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="industry">Industry/Niche</label>
+                        <select id="industry">
+                            <option value="">Any industry</option>
+                            <option value="technology">Technology</option>
+                            <option value="health">Health & Wellness</option>
+                            <option value="business">Business & Marketing</option>
+                            <option value="education">Education</option>
+                            <option value="finance">Finance</option>
+                            <option value="lifestyle">Lifestyle</option>
+                            <option value="travel">Travel</option>
+                            <option value="food">Food & Cooking</option>
+                            <option value="entertainment">Entertainment</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="tone">Writing Tone</label>
+                        <select id="tone">
+                            <option value="professional">Professional</option>
+                            <option value="conversational">Conversational</option>
+                            <option value="authoritative">Authoritative</option>
+                            <option value="friendly">Friendly</option>
+                            <option value="humorous">Humorous</option>
+                            <option value="inspirational">Inspirational</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="purpose">Article Purpose</label>
+                        <select id="purpose">
+                            <option value="inform">Inform/Educate</option>
+                            <option value="persuade">Persuade</option>
+                            <option value="entertain">Entertain</option>
+                            <option value="inspire">Inspire</option>
+                            <option value="review">Review</option>
+                            <option value="tutorial">Tutorial/How-to</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Prompt Types (select multiple)</label>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="type-headline" checked>
+                            <label for="type-headline">Headline Ideas</label>
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="type-outline" checked>
+                            <label for="type-outline">Article Outlines</label>
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="type-angle" checked>
+                            <label for="type-angle">Unique Angles</label>
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="type-question">
+                            <label for="type-question">Provocative Questions</label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="complexity">Complexity Level</label>
+                        <select id="complexity">
+                            <option value="beginner">Beginner</option>
+                            <option value="intermediate" selected>Intermediate</option>
+                            <option value="advanced">Advanced</option>
+                        </select>
+                    </div>
+                    
+                    <button type="button" id="generate-btn" class="btn btn-generate">
+                        <i class="fas fa-magic"></i> Generate Prompts
+                    </button>
+                    <button type="button" id="clear-btn" class="btn btn-clear">
+                        <i class="fas fa-trash-alt"></i> Clear Results
+                    </button>
+                </form>
+                
+                <div id="result-container" class="result-container">
+                    <h3>Generated Prompts</h3>
+                    <div id="prompts-list"></div>
+                </div>
+            </div>
+            
+            <div id="saved-tab" class="tab-content">
+                <div class="saved-prompts">
+                    <h3>Your Saved Prompts</h3>
+                    <div id="saved-prompts-list"></div>
+                    <button id="clear-saved-btn" class="btn btn-clear" style="margin-top: 20px;">
+                        <i class="fas fa-trash-alt"></i> Clear All Saved
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="ad-section">
+            <!-- Google AdSense Ad Unit -->
+            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-YOUR_PUBLISHER_ID"></script>
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-YOUR_PUBLISHER_ID"
+                 data-ad-slot="YOUR_AD_SLOT_ID"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Advanced Article Prompt Generator. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <div id="toast" class="toast">
+        <i class="fas fa-check-circle"></i>
+        <span>Copied to clipboard!</span>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM elements
+            const form = document.getElementById('prompt-form');
+            const generateBtn = document.getElementById('generate-btn');
+            const clearBtn = document.getElementById('clear-btn');
+            const clearSavedBtn = document.getElementById('clear-saved-btn');
+            const resultContainer = document.getElementById('result-container');
+            const promptsList = document.getElementById('prompts-list');
+            const savedPromptsList = document.getElementById('saved-prompts-list');
+            const toast = document.getElementById('toast');
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            const savedPromptsSection = document.querySelector('.saved-prompts');
+            
+            // Sample prompt templates
+            const headlineTemplates = [
+                "The Ultimate Guide to [TOPIC] for [INDUSTRY]",
+                "[NUMBER] [TOPIC] Strategies That Actually Work",
+                "Why [TOPIC] Is Changing the [INDUSTRY] Industry",
+                "The [ADJECTIVE] Truth About [TOPIC]",
+                "How to [ACTION] With [TOPIC]: A Step-by-Step Guide",
+                "[TOPIC] Explained: What [INDUSTRY] Professionals Need to Know",
+                "The Future of [TOPIC] in [INDUSTRY]: [YEAR] Predictions",
+                "[NUMBER] Common Mistakes to Avoid With [TOPIC]",
+                "From Beginner to Expert: Mastering [TOPIC] in [NUMBER] Steps"
+            ];
+            
+            const outlineTemplates = [
+                "Introduction: Start with a surprising statistic about [TOPIC]\nBody:\n- Section 1: The current state of [TOPIC] in [INDUSTRY]\n- Section 2: Key challenges with [TOPIC]\n- Section 3: Practical solutions for [AUDIENCE]\nConclusion: Call to action for readers",
+                "1. What is [TOPIC] and why it matters\n2. Common misconceptions about [TOPIC]\n3. How to implement [TOPIC] effectively\n4. Real-world examples of [TOPIC] success\n5. Future trends in [TOPIC]",
+                "Hook: Engaging story about [TOPIC]\nProblem: Why [TOPIC] is relevant to [AUDIENCE]\nSolution: [NUMBER] ways to approach [TOPIC]\nConclusion: Key takeaways",
+                "Introduction: Define [TOPIC] and its importance\nPart 1: Historical context of [TOPIC]\nPart 2: Current applications in [INDUSTRY]\nPart 3: Step-by-step implementation guide\nPart 4: Case studies and success stories\nConclusion: Summary and next steps"
+            ];
+            
+            const angleTemplates = [
+                "Explore [TOPIC] from the perspective of [UNIQUE_ANGLE]",
+                "What [INDUSTRY] experts won't tell you about [TOPIC]",
+                "The connection between [TOPIC] and [UNRELATED_FIELD]",
+                "How [HISTORICAL_EVENT] predicts the future of [TOPIC]",
+                "[TOPIC] Through the Lens of [DIFFERENT_PERSPECTIVE]",
+                "The Untold Story of [TOPIC] in [INDUSTRY]",
+                "What [FAMOUS_PERSON] Can Teach Us About [TOPIC]"
+            ];
+            
+            const questionTemplates = [
+                "Is [TOPIC] really worth the hype in [INDUSTRY]?",
+                "What would happen if we stopped [TOPIC] altogether?",
+                "How is [TOPIC] fundamentally changing [INDUSTRY]?",
+                "Why does [TOPIC] continue to fail despite all the attention?",
+                "Are we approaching [TOPIC] all wrong?",
+                "What's the dark side of [TOPIC] that no one talks about?",
+                "How might [TOPIC] evolve in the next [NUMBER] years?"
+            ];
+            
+            const adjectives = {
+                beginner: ["Simple", "Basic", "Easy", "Essential", "Fundamental"],
+                intermediate: ["Practical", "Effective", "Proven", "Advanced", "Comprehensive"],
+                advanced: ["Cutting-edge", "Revolutionary", "Groundbreaking", "Innovative", "Transformative"]
+            };
+            
+            const actions = {
+                beginner: ["start", "understand", "learn", "begin", "approach"],
+                intermediate: ["master", "implement", "optimize", "leverage", "utilize"],
+                advanced: ["revolutionize", "transform", "reimagine", "reinvent", "disrupt"]
+            };
+            
+            // Tab switching
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // Update active tab
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Show corresponding content
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    document.getElementById(`${tabId}-tab`).classList.add('active');
+                    
+                    // Show saved prompts section if needed
+                    if (tabId === 'saved') {
+                        savedPromptsSection.style.display = 'block';
+                        loadSavedPrompts();
+                    } else {
+                        savedPromptsSection.style.display = 'none';
+                    }
+                });
+            });
+            
+            // Generate prompts
+            generateBtn.addEventListener('click', function() {
+                const topic = document.getElementById('topic').value.trim();
+                const industry = document.getElementById('industry').value;
+                const tone = document.getElementById('tone').value;
+                const purpose = document.getElementById('purpose').value;
+                const complexity = document.getElementById('complexity').value;
+                
+                const includeHeadline = document.getElementById('type-headline').checked;
+                const includeOutline = document.getElementById('type-outline').checked;
+                const includeAngle = document.getElementById('type-angle').checked;
+                const includeQuestion = document.getElementById('type-question').checked;
+                
+                if (!topic) {
+                    showToast('Please enter a topic or keyword', 'error');
+                    return;
+                }
+                
+                promptsList.innerHTML = '';
+                
+                // Generate prompts based on selected types
+                if (includeHeadline) {
+                    generatePromptCards('Headline Ideas', generateHeadlines(topic, industry, complexity), 'headline');
+                }
+                
+                if (includeOutline) {
+                    generatePromptCards('Article Outlines', generateOutlines(topic, industry, purpose), 'outline');
+                }
+                
+                if (includeAngle) {
+                    generatePromptCards('Unique Angles', generateAngles(topic, industry), 'angle');
+                }
+                
+                if (includeQuestion) {
+                    generatePromptCards('Provocative Questions', generateQuestions(topic, industry), 'question');
+                }
+                
+                resultContainer.style.display = 'block';
+            });
+            
+            // Clear results
+            clearBtn.addEventListener('click', function() {
+                promptsList.innerHTML = '';
+                resultContainer.style.display = 'none';
+            });
+            
+            // Clear saved prompts
+            clearSavedBtn.addEventListener('click', function() {
+                if (confirm('Are you sure you want to delete all saved prompts?')) {
+                    localStorage.removeItem('savedPrompts');
+                    savedPromptsList.innerHTML = '<p>No saved prompts yet.</p>';
+                    showToast('All saved prompts deleted', 'success');
+                }
+            });
+            
+            function generatePromptCards(title, prompts, type) {
+                const section = document.createElement('div');
+                section.innerHTML = `<h4 style="margin: 20px 0 10px; color: var(--primary-color)">${title}</h4>`;
+                
+                prompts.forEach(prompt => {
+                    const wordCount = prompt.split(/\s+/).length;
+                    const card = document.createElement('div');
+                    card.className = 'prompt-card';
+                    card.innerHTML = `
+                        <div class="word-count">${wordCount} words</div>
+                        <div class="prompt-text">${prompt}</div>
+                        <div class="action-buttons">
+                            <button class="btn btn-copy" data-prompt="${escapeHtml(prompt)}">
+                                <i class="fas fa-copy"></i> Copy
+                            </button>
+                            <button class="btn btn-save" data-prompt="${escapeHtml(prompt)}" data-type="${type}">
+                                <i class="fas fa-bookmark"></i> Save
+                            </button>
+                        </div>
+                    `;
+                    section.appendChild(card);
+                });
+                
+                promptsList.appendChild(section);
+                
+                // Add copy functionality
+                document.querySelectorAll('.btn-copy').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const prompt = this.getAttribute('data-prompt');
+                        copyToClipboard(prompt);
+                        showToast('Copied to clipboard!', 'success');
+                    });
+                });
+                
+                // Add save functionality
+                document.querySelectorAll('.btn-save').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const prompt = this.getAttribute('data-prompt');
+                        const type = this.getAttribute('data-type');
+                        savePrompt(prompt, type);
+                    });
+                });
+            }
+            
+            function generateHeadlines(topic, industry, complexity) {
+                const adj = adjectives[complexity];
+                const act = actions[complexity];
+                const industryText = industry ? industry.replace(/-/g, ' ') : 'your industry';
+                const currentYear = new Date().getFullYear();
+                const nextYear = currentYear + 1;
+                
+                return headlineTemplates.map(template => {
+                    return template
+                        .replace('[TOPIC]', topic)
+                        .replace('[INDUSTRY]', industryText.charAt(0).toUpperCase() + industryText.slice(1))
+                        .replace('[ADJECTIVE]', adj[Math.floor(Math.random() * adj.length)])
+                        .replace('[ACTION]', act[Math.floor(Math.random() * act.length)])
+                        .replace('[NUMBER]', Math.floor(Math.random() * 10) + 5)
+                        .replace('[YEAR]', nextYear);
+                });
+            }
+            
+            function generateOutlines(topic, industry, purpose) {
+                const industryText = industry ? industry : 'relevant industries';
+                const audience = purpose === 'inform' ? 'beginners' : 
+                                 purpose === 'persuade' ? 'decision makers' :
+                                 purpose === 'tutorial' ? 'learners' : 'readers';
+                
+                return outlineTemplates.map(template => {
+                    return template
+                        .replace(/\[TOPIC\]/g, topic)
+                        .replace('[INDUSTRY]', industryText)
+                        .replace('[AUDIENCE]', audience)
+                        .replace('[NUMBER]', Math.floor(Math.random() * 5) + 3);
+                });
+            }
+            
+            function generateAngles(topic, industry) {
+                const angles = [
+                    'a beginner',
+                    'an expert',
+                    'a skeptic',
+                    'a futurist',
+                    'a historian',
+                    'a consumer',
+                    'a producer'
+                ];
+                
+                const unrelatedFields = [
+                    'climate change',
+                    'ancient philosophy',
+                    'modern art',
+                    'child development',
+                    'space exploration',
+                    'quantum physics',
+                    'medieval history'
+                ];
+                
+                const historicalEvents = [
+                    'the Industrial Revolution',
+                    'the Renaissance',
+                    'the Digital Age',
+                    'the Enlightenment',
+                    'the Information Age',
+                    'the Space Race',
+                    'the Internet Boom'
+                ];
+                
+                const perspectives = [
+                    'psychology',
+                    'economics',
+                    'philosophy',
+                    'art',
+                    'science',
+                    'technology',
+                    'history'
+                ];
+                
+                const famousPeople = [
+                    'Einstein',
+                    'Steve Jobs',
+                    'Marie Curie',
+                    'Da Vinci',
+                    'Aristotle',
+                    'Elon Musk',
+                    'Oprah Winfrey'
+                ];
+                
+                return angleTemplates.map(template => {
+                    return template
+                        .replace('[TOPIC]', topic)
+                        .replace('[INDUSTRY]', industry || 'your field')
+                        .replace('[UNIQUE_ANGLE]', angles[Math.floor(Math.random() * angles.length)])
+                        .replace('[UNRELATED_FIELD]', unrelatedFields[Math.floor(Math.random() * unrelatedFields.length)])
+                        .replace('[HISTORICAL_EVENT]', historicalEvents[Math.floor(Math.random() * historicalEvents.length)])
+                        .replace('[DIFFERENT_PERSPECTIVE]', perspectives[Math.floor(Math.random() * perspectives.length)])
+                        .replace('[FAMOUS_PERSON]', famousPeople[Math.floor(Math.random() * famousPeople.length)]);
+                });
+            }
+            
+            function generateQuestions(topic, industry) {
+                return questionTemplates.map(template => {
+                    return template
+                        .replace('[TOPIC]', topic)
+                        .replace('[INDUSTRY]', industry || 'your industry')
+                        .replace('[NUMBER]', Math.floor(Math.random() * 10) + 5);
+                });
+            }
+            
+            function savePrompt(prompt, type) {
+                let savedPrompts = JSON.parse(localStorage.getItem('savedPrompts')) || [];
+                
+                // Check if prompt already exists
+                if (!savedPrompts.some(p => p.text === prompt)) {
+                    savedPrompts.push({
+                        text: prompt,
+                        type: type,
+                        date: new Date().toISOString()
+                    });
+                    
+                    localStorage.setItem('savedPrompts', JSON.stringify(savedPrompts));
+                    showToast('Prompt saved successfully!', 'success');
+                    
+                    // Update saved prompts list if on that tab
+                    if (document.querySelector('.tab.active').getAttribute('data-tab') === 'saved') {
+                        loadSavedPrompts();
+                    }
+                } else {
+                    showToast('This prompt is already saved', 'info');
+                }
+            }
+            
+            function loadSavedPrompts() {
+                const savedPrompts = JSON.parse(localStorage.getItem('savedPrompts')) || [];
+                
+                if (savedPrompts.length === 0) {
+                    savedPromptsList.innerHTML = '<p>No saved prompts yet.</p>';
+                    return;
+                }
+                
+                savedPromptsList.innerHTML = '';
+                
+                // Group by type
+                const groupedPrompts = {};
+                savedPrompts.forEach(prompt => {
+                    if (!groupedPrompts[prompt.type]) {
+                        groupedPrompts[prompt.type] = [];
+                    }
+                    groupedPrompts[prompt.type].push(prompt);
+                });
+                
+                // Display by group
+                for (const type in groupedPrompts) {
+                    const section = document.createElement('div');
+                    let typeName = '';
+                    
+                    switch(type) {
+                        case 'headline':
+                            typeName = 'Headline Ideas';
+                            break;
+                        case 'outline':
+                            typeName = 'Article Outlines';
+                            break;
+                        case 'angle':
+                            typeName = 'Unique Angles';
+                            break;
+                        case 'question':
+                            typeName = 'Provocative Questions';
+                            break;
+                        default:
+                            typeName = type;
+                    }
+                    
+                    section.innerHTML = `<h4 style="margin: 20px 0 10px; color: var(--primary-color)">${typeName}</h4>`;
+                    
+                    groupedPrompts[type].forEach(prompt => {
+                        const wordCount = prompt.text.split(/\s+/).length;
+                        const date = new Date(prompt.date).toLocaleDateString();
+                        const card = document.createElement('div');
+                        card.className = 'prompt-card';
+                        card.innerHTML = `
+                            <div class="word-count">${wordCount} words • ${date}</div>
+                            <div class="prompt-text">${prompt.text}</div>
+                            <div class="action-buttons">
+                                <button class="btn btn-copy" data-prompt="${escapeHtml(prompt.text)}">
+                                    <i class="fas fa-copy"></i> Copy
+                                </button>
+                                <button class="btn btn-clear" data-prompt="${escapeHtml(prompt.text)}" style="background-color: var(--danger-color)">
+                                    <i class="fas fa-trash-alt"></i> Delete
+                                </button>
+                            </div>
+                        `;
+                        section.appendChild(card);
+                    });
+                    
+                    savedPromptsList.appendChild(section);
+                }
+                
+                // Add event listeners for saved prompts
+                document.querySelectorAll('#saved-prompts-list .btn-copy').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const prompt = this.getAttribute('data-prompt');
+                        copyToClipboard(prompt);
+                        showToast('Copied to clipboard!', 'success');
+                    });
+                });
+                
+                document.querySelectorAll('#saved-prompts-list .btn-clear').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const prompt = this.getAttribute('data-prompt');
+                        deletePrompt(prompt);
+                    });
+                });
+            }
+            
+            function deletePrompt(promptText) {
+                let savedPrompts = JSON.parse(localStorage.getItem('savedPrompts')) || [];
+                savedPrompts = savedPrompts.filter(p => p.text !== promptText);
+                localStorage.setItem('savedPrompts', JSON.stringify(savedPrompts));
+                loadSavedPrompts();
+                showToast('Prompt deleted', 'success');
+            }
+            
+            function copyToClipboard(text) {
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+            }
+            
+            function showToast(message, type = 'success') {
+                // Clear previous toast classes
+                toast.className = 'toast';
+                toast.innerHTML = '';
+                
+                // Set icon based on type
+                let icon = '';
+                if (type === 'success') {
+                    icon = '<i class="fas fa-check-circle"></i>';
+                    toast.style.backgroundColor = 'var(--success-color)';
+                } else if (type === 'error') {
+                    icon = '<i class="fas fa-exclamation-circle"></i>';
+                    toast.style.backgroundColor = 'var(--danger-color)';
+                } else if (type === 'info') {
+                    icon = '<i class="fas fa-info-circle"></i>';
+                    toast.style.backgroundColor = 'var(--primary-color)';
+                }
+                
+                toast.innerHTML = `${icon}<span>${message}</span>`;
+                toast.classList.add('show');
+                
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            }
+            
+            function escapeHtml(unsafe) {
+                return unsafe
+                    .replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;")
+                    .replace(/"/g, "&quot;")
+                    .replace(/'/g, "&#039;");
+            }
+        });
+    </script>
+</body>
+</html>
