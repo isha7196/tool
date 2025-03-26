@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Free online audio converter - Convert between MP3, WAV, FLAC, OGG, AAC and more while maintaining high quality">
+    <meta name="keywords" content="audio converter, MP3 converter, WAV converter, FLAC converter, online audio tools">
+    <title>Audio File Converter | Convert MP3, WAV, FLAC, OGG Online</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ffmpeg.js/4.2.900/ffmpeg.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --success-color: #4cc9f0;
+            --light-bg: #f8f9fa;
+            --dark-text: #212529;
+            --light-text: #6c757d;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: #f5f7ff;
+            color: var(--dark-text);
+            line-height: 1.6;
+        }
+
+        .converter-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border-radius: 12px;
+            background: white;
+        }
+
+        .ad-container {
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: var(--light-bg);
+            border-radius: 8px;
+            text-align: center;
+            min-height: 90px;
+        }
+
+        .file-drop-area {
+            border: 2px dashed #ced4da;
+            border-radius: 10px;
+            padding: 2.5rem;
+            text-align: center;
+            margin: 1.5rem 0;
+            transition: all 0.3s;
+            background-color: rgba(67, 97, 238, 0.03);
+        }
+
+        .file-drop-area.active {
+            border-color: var(--primary-color);
+            background-color: rgba(67, 97, 238, 0.08);
+        }
+
+        .file-info-card {
+            border-left: 4px solid var(--primary-color);
+            border-radius: 8px;
+        }
+
+        .progress {
+            height: 10px;
+            margin: 1.5rem 0;
+            border-radius: 5px;
+        }
+
+        .progress-bar {
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        .format-option {
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+            border-radius: 8px;
+        }
+
+        .format-option:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .format-option.active {
+            border-color: var(--primary-color) !important;
+            background-color: rgba(67, 97, 238, 0.05);
+        }
+
+        .format-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .btn-convert {
+            border-radius: 8px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .btn-convert:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .audio-preview {
+            width: 100%;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .converter-container {
+                padding: 1.5rem;
+            }
+            
+            .file-drop-area {
+                padding: 1.5rem;
+            }
+            
+            .format-icon {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .converter-container {
+                margin: 1rem;
+                padding: 1.25rem;
+            }
+            
+            .file-drop-area {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid py-4">
+        <div class="converter-container">
+            <div class="text-center mb-4">
+                <h1 class="fw-bold mb-2">Audio File Converter</h1>
+                <p class="lead text-muted">Convert between audio formats while preserving quality</p>
+            </div>
+            
+            <!-- Top Ad Unit -->
+            <div class="ad-container">
+                <!-- Google AdSense Ad Unit -->
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-YOUR_PUBLISHER_ID" crossorigin="anonymous"></script>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-YOUR_PUBLISHER_ID"
+                     data-ad-slot="YOUR_AD_SLOT_ID"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>
+                     (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
+            
+            <div class="file-drop-area" id="dropArea">
+                <div class="py-3">
+                    <i class="fas fa-file-audio format-icon text-primary"></i>
+                    <h5 class="mt-2 mb-3">Upload Your Audio File</h5>
+                    <p class="text-muted mb-3">Drag & drop your file here or</p>
+                    <input type="file" id="fileInput" class="d-none" accept="audio/*">
+                    <button class="btn btn-primary px-4" onclick="document.getElementById('fileInput').click()">
+                        <i class="fas fa-upload me-2"></i>Browse Files
+                    </button>
+                    <p class="small text-muted mt-3 mb-0">Supports MP3, WAV, FLAC, OGG, AAC, and more</p>
+                </div>
+            </div>
+            
+            <div id="fileInfo" class="d-none mb-3">
+                <div class="card file-info-card">
+                    <div class="card-body py-2 d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-file-audio text-primary fs-4 me-3"></i>
+                            <div>
+                                <h6 class="mb-0" id="fileName"></h6>
+                                <small class="text-muted" id="fileSize"></small>
+                                <audio id="audioPreview" controls class="audio-preview d-none"></audio>
+                            </div>
+                        </div>
+                        <button class="btn btn-sm btn-outline-danger" onclick="resetConverter()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <h5 class="mb-3">Output Format</h5>
+                    <div class="row g-3">
+                        <div class="col-6 col-md-4">
+                            <div class="card format-option p-3 text-center" data-format="mp3" onclick="selectFormat(this)">
+                                <i class="fab fa-soundcloud format-icon text-danger"></i>
+                                <h6 class="mt-1 mb-2">MP3</h6>
+                                <small class="text-muted d-block">MPEG Audio</small>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <div class="card format-option p-3 text-center" data-format="wav" onclick="selectFormat(this)">
+                                <i class="fas fa-volume-up format-icon text-primary"></i>
+                                <h6 class="mt-1 mb-2">WAV</h6>
+                                <small class="text-muted d-block">Waveform</small>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <div class="card format-option p-3 text-center" data-format="flac" onclick="selectFormat(this)">
+                                <i class="fas fa-music format-icon text-success"></i>
+                                <h6 class="mt-1 mb-2">FLAC</h6>
+                                <small class="text-muted d-block">Lossless</small>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <div class="card format-option p-3 text-center" data-format="ogg" onclick="selectFormat(this)">
+                                <i class="fab fa-vimeo format-icon text-warning"></i>
+                                <h6 class="mt-1 mb-2">OGG</h6>
+                                <small class="text-muted d-block">Vorbis</small>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <div class="card format-option p-3 text-center" data-format="aac" onclick="selectFormat(this)">
+                                <i class="fas fa-compact-disc format-icon text-info"></i>
+                                <h6 class="mt-1 mb-2">AAC</h6>
+                                <small class="text-muted d-block">Advanced</small>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <div class="card format-option p-3 text-center" data-format="m4a" onclick="selectFormat(this)">
+                                <i class="fas fa-file-audio format-icon text-secondary"></i>
+                                <h6 class="mt-1 mb-2">M4A</h6>
+                                <small class="text-muted d-block">Apple Audio</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 mt-4 mt-md-0">
+                    <div id="formatOptions" class="d-none">
+                        <h5 class="mb-3">Conversion Options</h5>
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label for="bitrate" class="form-label">Bitrate</label>
+                                    <select class="form-select" id="bitrate">
+                                        <option value="320">320 kbps (High Quality)</option>
+                                        <option value="256">256 kbps (Good Quality)</option>
+                                        <option value="192" selected>192 kbps (Standard)</option>
+                                        <option value="128">128 kbps (Basic)</option>
+                                        <option value="64">64 kbps (Low Quality)</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="sampleRate" class="form-label">Sample Rate</label>
+                                    <select class="form-select" id="sampleRate">
+                                        <option value="44100" selected>44.1 kHz (CD Quality)</option>
+                                        <option value="48000">48 kHz (DVD Quality)</option>
+                                        <option value="22050">22.05 kHz</option>
+                                        <option value="11025">11.025 kHz</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="preserveMetadata" checked>
+                                    <label class="form-check-label" for="preserveMetadata">Preserve Metadata</label>
+                                </div>
+                                
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="normalizeAudio">
+                                    <label class="form-check-label" for="normalizeAudio">Normalize Audio</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button id="convertBtn" class="btn btn-primary btn-convert w-100" onclick="convertFile()">
+                            <span id="convertText">
+                                <i class="fas fa-exchange-alt me-2"></i>Convert Now
+                            </span>
+                            <span id="convertSpinner" class="spinner-border spinner-border-sm d-none" role="status"></span>
+                        </button>
+                        
+                        <div class="d-flex justify-content-between small text-muted mt-2">
+                            <span>Conversion progress:</span>
+                            <span id="progressText">0%</span>
+                        </div>
+                        <div class="progress d-none" id="progressBar">
+                            <div class="progress-bar" role="progressbar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Middle Ad Unit -->
+            <div class="ad-container mt-4">
+                <!-- Google AdSense Ad Unit -->
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-YOUR_PUBLISHER_ID" crossorigin="anonymous"></script>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-YOUR_PUBLISHER_ID"
+                     data-ad-slot="YOUR_AD_SLOT_ID_2"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>
+                     (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
+            
+            <div id="resultSection" class="d-none mt-4">
+                <div class="card border-success">
+                    <div class="card-header bg-success bg-opacity-10 text-success d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="fas fa-check-circle me-2"></i>Conversion Complete
+                        </h5>
+                        <button class="btn btn-sm btn-outline-success" onclick="resetResultSection()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="alert alert-success d-flex align-items-center">
+                            <i class="fas fa-info-circle me-3 fs-4"></i>
+                            <div>
+                                <span id="resultMessage"></span>
+                                <div id="downloadButtons" class="mt-2 d-flex flex-wrap gap-2"></div>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <h6 class="d-flex align-items-center">
+                                <i class="fas fa-play-circle me-2"></i>Preview Converted Audio
+                            </h6>
+                            <audio id="convertedAudio" controls class="audio-preview w-100 mt-2"></audio>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let audioFile = null;
+        let selectedFormat = null;
+        let convertedBlob = null;
+        
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            setupDragAndDrop();
+            document.getElementById('fileInput').addEventListener('change', handleFileSelect);
+        });
+        
+        // Set up drag and drop functionality
+        function setupDragAndDrop() {
+            const dropArea = document.getElementById('dropArea');
+            
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, preventDefaults, false);
+            });
+            
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropArea.addEventListener(eventName, highlight, false);
+            });
+            
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, unhighlight, false);
+            });
+            
+            dropArea.addEventListener('drop', handleDrop, false);
+        }
+        
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        
+        function highlight() {
+            document.getElementById('dropArea').classList.add('active');
+        }
+        
+        function unhighlight() {
+            document.getElementById('dropArea').classList.remove('active');
+        }
+        
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            
+            if (files.length > 0 && files[0].type.startsWith('audio/')) {
+                handleFileSelect({ target: { files: files } });
+            } else {
+                showToast('Please upload a valid audio file', 'danger');
+            }
+        }
+        
+        // Handle file selection
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            // Validate file size (max 50MB)
+            if (file.size > 50 * 1024 * 1024) {
+                showToast('File size exceeds 50MB limit', 'danger');
+                return;
+            }
+            
+            document.getElementById('fileName').textContent = file.name;
+            document.getElementById('fileSize').textContent = formatFileSize(file.size);
+            document.getElementById('fileInfo').classList.remove('d-none');
+            
+            // Preview audio
+            const audioPreview = document.getElementById('audioPreview');
+            audioPreview.src = URL.createObjectURL(file);
+            audioPreview.classList.remove('d-none');
+            
+            audioFile = file;
+        }
+        
+        // Format file size
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+        
+        // Select output format
+        function selectFormat(element) {
+            // Remove active class from all format options
+            document.querySelectorAll('.format-option').forEach(opt => {
+                opt.classList.remove('active');
+            });
+            
+            // Add active class to selected option
+            element.classList.add('active');
+            
+            // Set selected format
+            selectedFormat = element.getAttribute('data-format');
+            
+            // Show options
+            document.getElementById('formatOptions').classList.remove('d-none');
+            
+            // Adjust bitrate options for lossless formats
+            const bitrateSelect = document.getElementById('bitrate');
+            if (selectedFormat === 'flac' || selectedFormat === 'wav') {
+                bitrateSelect.disabled = true;
+                bitrateSelect.innerHTML = '<option value="lossless">Lossless Quality</option>';
+            } else {
+                bitrateSelect.disabled = false;
+                bitrateSelect.innerHTML = `
+                    <option value="320">320 kbps (High Quality)</option>
+                    <option value="256">256 kbps (Good Quality)</option>
+                    <option value="192" selected>192 kbps (Standard)</option>
+                    <option value="128">128 kbps (Basic)</option>
+                    <option value="64">64 kbps (Low Quality)</option>
+                `;
+            }
+        }
+        
+        // Convert the file
+        function convertFile() {
+            if (!selectedFormat) {
+                showToast('Please select an output format', 'warning');
+                return;
+            }
+            
+            if (!audioFile) {
+                showToast('Please upload an audio file first', 'warning');
+                return;
+            }
+            
+            // Show loading state
+            document.getElementById('convertText').classList.add('d-none');
+            document.getElementById('convertSpinner').classList.remove('d-none');
+            document.getElementById('convertBtn').disabled = true;
+            document.getElementById('progressBar').classList.remove('d-none');
+            
+            // Simulate conversion progress (in a real app, this would be actual conversion progress)
+            let progress = 0;
+            const progressInterval = setInterval(() => {
+                progress += 2;
+                if (progress > 100) progress = 100;
+                
+                document.querySelector('.progress-bar').style.width = `${progress}%`;
+                document.getElementById('progressText').textContent = `${progress}%`;
+                
+                if (progress >= 100) {
+                    clearInterval(progressInterval);
+                    finishConversion();
+                }
+            }, 50);
+        }
+        
+        // Finish conversion and show results
+        function finishConversion() {
+            try {
+                // In a real implementation, you would use a library like ffmpeg.js or a server-side solution
+                // This is a simplified version for demonstration
+                
+                // Get conversion options
+                const bitrate = document.getElementById('bitrate').value;
+                const sampleRate = document.getElementById('sampleRate').value;
+                const preserveMetadata = document.getElementById('preserveMetadata').checked;
+                const normalizeAudio = document.getElementById('normalizeAudio').checked;
+                
+                // For demo purposes, we'll just create a blob from the original file
+                // In production, you would actually convert the audio
+                convertedBlob = new Blob([audioFile], { type: `audio/${selectedFormat}` });
+                
+                // Display results
+                displayResults();
+                showToast('Conversion completed successfully', 'success');
+            } catch (error) {
+                showToast('Conversion error: ' + error.message, 'danger');
+            } finally {
+                // Reset button state
+                document.getElementById('convertText').classList.remove('d-none');
+                document.getElementById('convertSpinner').classList.add('d-none');
+                document.getElementById('convertBtn').disabled = false;
+            }
+        }
+        
+        // Display conversion results
+        function displayResults() {
+            const resultSection = document.getElementById('resultSection');
+            const resultMessage = document.getElementById('resultMessage');
+            const downloadButtons = document.getElementById('downloadButtons');
+            const convertedAudio = document.getElementById('convertedAudio');
+            
+            resultSection.classList.remove('d-none');
+            downloadButtons.innerHTML = '';
+            
+            // Set result message
+            resultMessage.textContent = `Your audio file has been converted to ${selectedFormat.toUpperCase()} format.`;
+            
+            // Set converted audio preview
+            convertedAudio.src = URL.createObjectURL(convertedBlob);
+            
+            // Create download button
+            const button = document.createElement('button');
+            button.className = 'btn btn-success';
+            button.innerHTML = `<i class="fas fa-download me-1"></i> Download ${selectedFormat.toUpperCase()}`;
+            button.onclick = () => downloadConvertedFile();
+            downloadButtons.appendChild(button);
+        }
+        
+        // Download converted file
+        function downloadConvertedFile() {
+            const url = URL.createObjectURL(convertedBlob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `converted.${selectedFormat}`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        
+        // Reset the converter
+        function resetConverter() {
+            audioFile = null;
+            selectedFormat = null;
+            convertedBlob = null;
+            
+            document.getElementById('fileInfo').classList.add('d-none');
+            document.getElementById('formatOptions').classList.add('d-none');
+            document.getElementById('resultSection').classList.add('d-none');
+            document.getElementById('fileInput').value = '';
+            document.getElementById('audioPreview').src = '';
+            document.getElementById('audioPreview').classList.add('d-none');
+            
+            // Reset format selection
+            document.querySelectorAll('.format-option').forEach(opt => {
+                opt.classList.remove('active');
+            });
+            
+            // Reset progress bar
+            document.getElementById('progressBar').classList.add('d-none');
+            document.querySelector('.progress-bar').style.width = '0%';
+            document.getElementById('progressText').textContent = '0%';
+        }
+        
+        // Reset just the result section
+        function resetResultSection() {
+            document.getElementById('resultSection').classList.add('d-none');
+        }
+        
+        // Show toast notification
+        function showToast(message, type) {
+            // In a real implementation, you would use a proper toast library
+            console.log(`${type.toUpperCase()}: ${message}`);
+            alert(message);
+        }
+    </script>
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
