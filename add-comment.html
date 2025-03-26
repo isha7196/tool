@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Free online tool to add comments and text annotations to documents, images, or webpages. Supports formatting, resizing, and exporting to PDF, Word, or image formats.">
+    <meta name="keywords" content="comment tool, annotation tool, text annotation, PDF annotation, image annotation, document markup">
+    <title>Add Comments & Text Annotations Online | Free Annotation Tool</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/docx/7.8.2/docx.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --success-color: #4cc9f0;
+            --danger-color: #f72585;
+            --light-bg: #f8f9fa;
+            --dark-text: #212529;
+            --light-text: #6c757d;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: #f5f7ff;
+            color: var(--dark-text);
+            line-height: 1.6;
+        }
+
+        .tool-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border-radius: 12px;
+            background: white;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .ad-container {
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: var(--light-bg);
+            border-radius: 8px;
+            text-align: center;
+            min-height: 90px;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .content-area {
+            position: relative;
+            border: 2px dashed #ced4da;
+            border-radius: 10px;
+            min-height: 500px;
+            background-color: white;
+            overflow: hidden;
+            background-image: linear-gradient(45deg, #f5f5f5 25%, transparent 25%, transparent 75%, #f5f5f5 75%, #f5f5f5),
+                              linear-gradient(45deg, #f5f5f5 25%, transparent 25%, transparent 75%, #f5f5f5 75%, #f5f5f5);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+        }
+
+        .comment-box {
+            position: absolute;
+            min-width: 200px;
+            min-height: 100px;
+            background-color: #fff9c4;
+            border: 1px solid #ffd600;
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            resize: both;
+            overflow: auto;
+            cursor: move;
+            z-index: 10;
+        }
+
+        .comment-box:focus {
+            outline: 2px solid var(--primary-color);
+        }
+
+        .comment-toolbar {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+
+        .toolbar-btn {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 2px 8px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .toolbar-btn:hover {
+            background: #f0f0f0;
+        }
+
+        .toolbar-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .comment-content {
+            min-height: 60px;
+            width: 100%;
+            border: none;
+            background: transparent;
+            resize: none;
+            font-family: inherit;
+        }
+
+        .comment-content:focus {
+            outline: none;
+        }
+
+        .delete-comment {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: var(--danger-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .comment-box:hover .delete-comment {
+            opacity: 1;
+        }
+
+        .format-options {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 10px;
+            margin-bottom: 15px;
+        }
+
+        .btn-export {
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .btn-export:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .tool-container {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .tool-container {
+                margin: 1rem;
+                padding: 1.25rem;
+                border-radius: 10px;
+            }
+
+            .content-area {
+                min-height: 400px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .tool-container {
+                margin: 0.5rem;
+                padding: 1rem;
+                box-shadow: none;
+                border-radius: 0;
+                border: none;
+            }
+
+            .format-options {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid py-3 py-md-4">
+        <div class="tool-container animate-fade">
+            <div class="text-center mb-4">
+                <h1 class="fw-bold mb-2">Add Comments & Text Annotations</h1>
+                <p class="lead text-muted mb-0">Mark up documents, images, or web content with comments and notes</p>
+                <div class="d-flex justify-content-center align-items-center mt-2">
+                    <span class="badge bg-success me-2">Easy to use</span>
+                    <span class="badge bg-primary">100% Free</span>
+                </div>
+            </div>
+            
+            <!-- Top Ad Unit -->
+            <div class="ad-container">
+                <!-- Google AdSense Ad Unit -->
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-YOUR_PUBLISHER_ID" crossorigin="anonymous"></script>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-YOUR_PUBLISHER_ID"
+                     data-ad-slot="YOUR_AD_SLOT_ID"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>
+                     (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
+            
+            <div class="row g-4">
+                <!-- Left Column - Formatting Options -->
+                <div class="col-lg-3">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title mb-3">
+                                <i class="bi bi-pencil-square me-2"></i>Add Comments
+                            </h5>
+                            <p class="small text-muted">Click anywhere on the content area to add a new comment box.</p>
+                            
+                            <div class="format-options">
+                                <h6 class="mb-2">Text Formatting</h6>
+                                <div class="d-flex flex-wrap gap-2 mb-3">
+                                    <button class="btn btn-sm btn-outline-dark format-btn" data-command="bold" title="Bold">
+                                        <i class="bi bi-type-bold"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-dark format-btn" data-command="italic" title="Italic">
+                                        <i class="bi bi-type-italic"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-dark format-btn" data-command="underline" title="Underline">
+                                        <i class="bi bi-type-underline"></i>
+                                    </button>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label small fw-bold">Font Size</label>
+                                    <select class="form-select form-select-sm" id="fontSize">
+                                        <option value="12px">Small</option>
+                                        <option value="14px" selected>Medium</option>
+                                        <option value="16px">Large</option>
+                                        <option value="18px">Extra Large</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label small fw-bold">Text Color</label>
+                                    <div class="d-flex gap-2">
+                                        <input type="color" class="form-control form-control-color p-0" id="textColor" value="#000000" title="Choose text color">
+                                        <button class="btn btn-sm btn-outline-dark" id="applyColor">Apply</button>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label small fw-bold">Comment Color</label>
+                                    <input type="color" class="form-control form-control-color p-0" id="commentColor" value="#fff9c4" title="Choose comment background color">
+                                </div>
+                            </div>
+                            
+                            <div class="d-grid gap-2 mt-3">
+                                <button class="btn btn-danger" id="clearAll">
+                                    <i class="bi bi-trash me-1"></i> Clear All Comments
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title mb-3">
+                                <i class="bi bi-download me-2"></i>Export Options
+                            </h5>
+                            
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-success btn-export" id="exportPdf">
+                                    <i class="bi bi-file-earmark-pdf me-1"></i> Export as PDF
+                                </button>
+                                <button class="btn btn-primary btn-export" id="exportWord">
+                                    <i class="bi bi-file-earmark-word me-1"></i> Export as Word
+                                </button>
+                                <button class="btn btn-secondary btn-export" id="exportImage">
+                                    <i class="bi bi-file-earmark-image me-1"></i> Export as Image
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right Column - Content Area -->
+                <div class="col-lg-9">
+                    <div class="content-area" id="contentArea">
+                        <div class="p-4 text-center text-muted">
+                            <i class="bi bi-file-earmark-text fs-1 mb-3"></i>
+                            <h5>Click anywhere to add a comment</h5>
+                            <p class="mb-0">Or drag & drop an image/document here</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Middle Ad Unit -->
+            <div class="ad-container mt-4">
+                <!-- Google AdSense Ad Unit -->
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-YOUR_PUBLISHER_ID" crossorigin="anonymous"></script>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-YOUR_PUBLISHER_ID"
+                     data-ad-slot="YOUR_AD_SLOT_ID_2"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>
+                     (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
+        </div>
+        
+        <footer class="mt-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 text-center text-md-start">
+                        <p class="mb-0">© 2023 Comment & Annotation Tool. All rights reserved.</p>
+                    </div>
+                    <div class="col-md-6 text-center text-md-end">
+                        <p class="mb-0">
+                            <a href="/privacy" class="text-decoration-none me-2">Privacy Policy</a>
+                            <a href="/terms" class="text-decoration-none me-2">Terms of Service</a>
+                            <a href="/contact" class="text-decoration-none">Contact Us</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const contentArea = document.getElementById('contentArea');
+            let currentComment = null;
+            let isDragging = false;
+            let offsetX, offsetY;
+            let commentCount = 0;
+            
+            // Initialize the content area for comments
+            setupContentArea();
+            
+            // Set up event listeners for formatting buttons
+            document.querySelectorAll('.format-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    if (currentComment) {
+                        const textarea = currentComment.querySelector('.comment-content');
+                        document.execCommand(this.dataset.command, false, null);
+                        textarea.focus();
+                    }
+                });
+            });
+            
+            // Apply font size
+            document.getElementById('fontSize').addEventListener('change', function() {
+                if (currentComment) {
+                    const textarea = currentComment.querySelector('.comment-content');
+                    textarea.style.fontSize = this.value;
+                }
+            });
+            
+            // Apply text color
+            document.getElementById('applyColor').addEventListener('click', function() {
+                if (currentComment) {
+                    const textarea = currentComment.querySelector('.comment-content');
+                    const color = document.getElementById('textColor').value;
+                    document.execCommand('foreColor', false, color);
+                    textarea.focus();
+                }
+            });
+            
+            // Apply comment background color
+            document.getElementById('commentColor').addEventListener('change', function() {
+                if (currentComment) {
+                    currentComment.style.backgroundColor = this.value;
+                }
+            });
+            
+            // Clear all comments
+            document.getElementById('clearAll').addEventListener('click', function() {
+                if (confirm('Are you sure you want to remove all comments?')) {
+                    const comments = document.querySelectorAll('.comment-box');
+                    comments.forEach(comment => comment.remove());
+                    updatePlaceholderVisibility();
+                }
+            });
+            
+            // Export as PDF
+            document.getElementById('exportPdf').addEventListener('click', exportAsPdf);
+            
+            // Export as Word
+            document.getElementById('exportWord').addEventListener('click', exportAsWord);
+            
+            // Export as Image
+            document.getElementById('exportImage').addEventListener('click', exportAsImage);
+            
+            function setupContentArea() {
+                // Handle click to add new comment
+                contentArea.addEventListener('click', function(e) {
+                    if (e.target === contentArea) {
+                        createCommentBox(e.clientX - contentArea.getBoundingClientRect().left, 
+                                        e.clientY - contentArea.getBoundingClientRect().top);
+                    }
+                });
+                
+                // Handle drag and drop for files
+                contentArea.addEventListener('dragover', function(e) {
+                    e.preventDefault();
+                    this.classList.add('bg-light');
+                });
+                
+                contentArea.addEventListener('dragleave', function() {
+                    this.classList.remove('bg-light');
+                });
+                
+                contentArea.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    this.classList.remove('bg-light');
+                    
+                    if (e.dataTransfer.files.length > 0) {
+                        const file = e.dataTransfer.files[0];
+                        if (file.type.startsWith('image/')) {
+                            loadImageFile(file);
+                        } else {
+                            alert('Please drop an image file (JPEG, PNG, etc.)');
+                        }
+                    }
+                });
+            }
+            
+            function createCommentBox(x, y) {
+                const commentBox = document.createElement('div');
+                commentBox.className = 'comment-box';
+                commentBox.style.left = `${x}px`;
+                commentBox.style.top = `${y}px`;
+                commentBox.style.backgroundColor = document.getElementById('commentColor').value;
+                commentBox.tabIndex = 0;
+                
+                commentBox.innerHTML = `
+                    <button class="delete-comment" title="Delete comment">&times;</button>
+                    <div class="comment-toolbar">
+                        <button class="toolbar-btn" data-command="bold" title="Bold"><b>B</b></button>
+                        <button class="toolbar-btn" data-command="italic" title="Italic"><i>I</i></button>
+                        <button class="toolbar-btn" data-command="underline" title="Underline"><u>U</u></button>
+                    </div>
+                    <div class="comment-content" contenteditable="true" placeholder="Type your comment here..."></div>
+                `;
+                
+                contentArea.appendChild(commentBox);
+                commentCount++;
+                
+                // Set current comment and focus
+                currentComment = commentBox;
+                commentBox.querySelector('.comment-content').focus();
+                
+                // Add event listeners for the new comment
+                setupCommentEvents(commentBox);
+                updatePlaceholderVisibility();
+            }
+            
+            function setupCommentEvents(commentBox) {
+                // Delete button
+                commentBox.querySelector('.delete-comment').addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    commentBox.remove();
+                    commentCount--;
+                    updatePlaceholderVisibility();
+                });
+                
+                // Toolbar buttons
+                commentBox.querySelectorAll('.toolbar-btn').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        document.execCommand(this.dataset.command, false, null);
+                        commentBox.querySelector('.comment-content').focus();
+                    });
+                });
+                
+                // Make comment draggable
+                commentBox.addEventListener('mousedown', function(e) {
+                    if (e.target === this || e.target.classList.contains('comment-toolbar')) {
+                        isDragging = true;
+                        currentComment = this;
+                        offsetX = e.clientX - this.getBoundingClientRect().left;
+                        offsetY = e.clientY - this.getBoundingClientRect().top;
+                        this.style.zIndex = 1000;
+                    }
+                });
+                
+                // Focus management
+                commentBox.addEventListener('focus', function() {
+                    currentComment = this;
+                    this.style.zIndex = 1000;
+                });
+                
+                commentBox.addEventListener('blur', function() {
+                    this.style.zIndex = 10;
+                });
+            }
+            
+            document.addEventListener('mousemove', function(e) {
+                if (!isDragging || !currentComment) return;
+                
+                const contentRect = contentArea.getBoundingClientRect();
+                let x = e.clientX - contentRect.left - offsetX;
+                let y = e.clientY - contentRect.top - offsetY;
+                
+                // Boundary checks
+                x = Math.max(0, Math.min(x, contentRect.width - currentComment.offsetWidth));
+                y = Math.max(0, Math.min(y, contentRect.height - currentComment.offsetHeight));
+                
+                currentComment.style.left = `${x}px`;
+                currentComment.style.top = `${y}px`;
+            });
+            
+            document.addEventListener('mouseup', function() {
+                isDragging = false;
+                if (currentComment) {
+                    currentComment.style.zIndex = 10;
+                }
+            });
+            
+            function updatePlaceholderVisibility() {
+                const placeholder = contentArea.querySelector('.text-center');
+                if (placeholder) {
+                    placeholder.style.display = commentCount === 0 ? 'block' : 'none';
+                }
+            }
+            
+            function loadImageFile(file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    contentArea.innerHTML = '';
+                    commentCount = 0;
+                    
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.style.maxWidth = '100%';
+                    img.style.maxHeight = '100%';
+                    
+                    contentArea.appendChild(img);
+                    updatePlaceholderVisibility();
+                };
+                reader.readAsDataURL(file);
+            }
+            
+            async function exportAsPdf() {
+                try {
+                    const { jsPDF } = window.jspdf;
+                    const pdf = new jsPDF();
+                    
+                    // Use html2canvas to capture the content area
+                    const canvas = await html2canvas(contentArea, {
+                        scale: 2,
+                        logging: false,
+                        useCORS: true
+                    });
+                    
+                    const imgData = canvas.toDataURL('image/png');
+                    const imgProps = pdf.getImageProperties(imgData);
+                    const pdfWidth = pdf.internal.pageSize.getWidth();
+                    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+                    
+                    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+                    pdf.save('annotated-document.pdf');
+                    
+                    alert('PDF exported successfully!');
+                } catch (error) {
+                    console.error('Error exporting PDF:', error);
+                    alert('Error exporting PDF. Please try again.');
+                }
+            }
+            
+            function exportAsWord() {
+                alert('Word export would be implemented with docx.js in a production environment');
+                // In a real implementation, you would use docx.js to create a Word document
+            }
+            
+            function exportAsImage() {
+                html2canvas(contentArea, {
+                    scale: 2,
+                    logging: false,
+                    useCORS: true
+                }).then(canvas => {
+                    const link = document.createElement('a');
+                    link.download = 'annotated-content.png';
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                    
+                    alert('Image exported successfully!');
+                }).catch(error => {
+                    console.error('Error exporting image:', error);
+                    alert('Error exporting image. Please try again.');
+                });
+            }
+        });
+    </script>
+    
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
