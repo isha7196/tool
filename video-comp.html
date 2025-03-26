@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Easy Video Compressor</title>
+    <meta name="description" content="Compress videos easily with our simple, friendly tool. Reduce file size while maintaining quality.">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-light: #4895ef;
+            --secondary: #3f37c9;
+            --accent: #f72585;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --success: #4cc9f0;
+            --warning: #f8961e;
+            --danger: #ef233c;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark);
+            line-height: 1.6;
+            padding: 0;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            margin-bottom: 30px;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .upload-area {
+            text-align: center;
+            padding: 40px 20px;
+            border: 2px dashed #dee2e6;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+            background-color: #f8f9fa;
+            cursor: pointer;
+        }
+
+        .upload-area:hover {
+            border-color: var(--primary);
+            background-color: rgba(67, 97, 238, 0.05);
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .upload-text {
+            font-size: 1.1rem;
+            color: var(--gray);
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(to right, var(--primary), var(--primary-light));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(67, 97, 238, 0.2);
+        }
+
+        .btn-secondary {
+            background-color: white;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(67, 97, 238, 0.05);
+        }
+
+        .btn-lg {
+            padding: 15px 30px;
+            font-size: 1.1rem;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
+        .file-info {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .file-info-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .file-info-label {
+            font-size: 0.8rem;
+            color: var(--gray);
+            margin-bottom: 5px;
+        }
+
+        .file-info-value {
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .video-preview {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        @media (min-width: 768px) {
+            .video-preview {
+                flex-direction: row;
+            }
+        }
+
+        .video-container {
+            flex: 1;
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: #f8f9fa;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .video-container.empty {
+            border: 2px dashed #dee2e6;
+        }
+
+        .video-placeholder {
+            text-align: center;
+            padding: 20px;
+            color: var(--gray);
+        }
+
+        .video-placeholder-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+            color: #adb5bd;
+        }
+
+        video {
+            width: 100%;
+            display: block;
+        }
+
+        .video-label {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+
+        .settings {
+            margin: 30px 0;
+        }
+
+        .settings-title {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .settings-title i {
+            color: var(--primary);
+        }
+
+        .settings-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .settings-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .setting-group {
+            margin-bottom: 20px;
+        }
+
+        .setting-label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .setting-description {
+            font-size: 0.8rem;
+            color: var(--gray);
+            margin-top: 5px;
+        }
+
+        select, input[type="range"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 1rem;
+            background-color: white;
+        }
+
+        select:focus, input[type="range"]:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            height: 8px;
+            background: #dee2e6;
+            border-radius: 5px;
+            padding: 0;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--primary);
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+        }
+
+        .quality-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5px;
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+
+        .actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .progress-container {
+            display: none;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .progress {
+            height: 100%;
+            width: 0;
+            background: linear-gradient(to right, var(--primary), var(--primary-light));
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .result {
+            text-align: center;
+            margin: 30px 0;
+            display: none;
+        }
+
+        .result-info {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .result-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 15px 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            min-width: 150px;
+        }
+
+        .result-label {
+            font-size: 0.8rem;
+            color: var(--gray);
+            margin-bottom: 5px;
+        }
+
+        .result-value {
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .result-value.savings {
+            color: var(--success);
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--dark);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            max-width: 90%;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            background-color: var(--success);
+        }
+
+        .toast.error {
+            background-color: var(--danger);
+        }
+
+        .toast-icon {
+            font-size: 20px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-top: 50px;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .tagline {
+                font-size: 1rem;
+            }
+            
+            .card {
+                padding: 20px;
+            }
+            
+            .upload-area {
+                padding: 30px 15px;
+            }
+            
+            .btn-lg {
+                padding: 12px 20px;
+                font-size: 1rem;
+            }
+            
+            .settings-title {
+                font-size: 1.1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+            
+            header {
+                padding: 30px 15px;
+                border-radius: 0;
+            }
+            
+            .file-info {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Easy Video Compressor</h1>
+            <p class="tagline">Reduce video file size quickly without complicated settings</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="card">
+            <div id="upload-area" class="upload-area">
+                <div class="upload-icon">📁</div>
+                <h3 class="upload-text">Drag & drop your video here or click to browse</h3>
+                <button class="btn btn-primary btn-lg">
+                    <span class="upload-btn-icon">⬆️</span>
+                    <span>Select Video File</span>
+                </button>
+                <input type="file" id="video-file" accept="video/*" style="display: none;">
+            </div>
+
+            <div id="file-info" class="file-info" style="display: none;">
+                <div class="file-info-item">
+                    <span class="file-info-label">File Name</span>
+                    <span class="file-info-value" id="file-name">-</span>
+                </div>
+                <div class="file-info-item">
+                    <span class="file-info-label">File Size</span>
+                    <span class="file-info-value" id="file-size">-</span>
+                </div>
+                <div class="file-info-item">
+                    <span class="file-info-label">Duration</span>
+                    <span class="file-info-value" id="file-duration">-</span>
+                </div>
+                <div class="file-info-item">
+                    <span class="file-info-label">Resolution</span>
+                    <span class="file-info-value" id="file-resolution">-</span>
+                </div>
+            </div>
+
+            <div class="video-preview">
+                <div class="video-container empty" id="original-video-container">
+                    <div class="video-placeholder">
+                        <div class="video-placeholder-icon">🎬</div>
+                        <p>Original video will appear here</p>
+                    </div>
+                    <video id="original-video" controls style="display: none;"></video>
+                    <div class="video-label" style="display: none;">Original</div>
+                </div>
+                <div class="video-container empty" id="compressed-video-container">
+                    <div class="video-placeholder">
+                        <div class="video-placeholder-icon">🎥</div>
+                        <p>Compressed video will appear here</p>
+                    </div>
+                    <video id="compressed-video" controls style="display: none;"></video>
+                    <div class="video-label" style="display: none;">Compressed</div>
+                </div>
+            </div>
+
+            <div class="settings">
+                <h3 class="settings-title">
+                    <span>⚙️</span>
+                    <span>Compression Settings</span>
+                </h3>
+                
+                <div class="settings-grid">
+                    <div>
+                        <div class="setting-group">
+                            <label class="setting-label" for="resolution">Video Resolution</label>
+                            <select id="resolution">
+                                <option value="original">Keep original resolution</option>
+                                <option value="1920x1080">Full HD (1920×1080)</option>
+                                <option value="1280x720">HD (1280×720)</option>
+                                <option value="854x480">SD (854×480)</option>
+                                <option value="640x360">Low (640×360)</option>
+                            </select>
+                            <p class="setting-description">Lower resolution means smaller file size</p>
+                        </div>
+
+                        <div class="setting-group">
+                            <label class="setting-label" for="quality">Video Quality</label>
+                            <input type="range" id="quality" min="1" max="10" step="1" value="7">
+                            <div class="quality-indicator">
+                                <span>Smaller file</span>
+                                <span>Better quality</span>
+                            </div>
+                            <p class="setting-description">Balance between quality and file size</p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="setting-group">
+                            <label class="setting-label" for="output-format">Output Format</label>
+                            <select id="output-format">
+                                <option value="mp4">MP4 (Recommended)</option>
+                                <option value="mov">MOV (Apple devices)</option>
+                                <option value="webm">WebM (For web)</option>
+                                <option value="avi">AVI (Universal)</option>
+                            </select>
+                            <p class="setting-description">Choose the best format for your needs</p>
+                        </div>
+
+                        <div class="setting-group">
+                            <label class="setting-label" for="audio-quality">Audio Quality</label>
+                            <input type="range" id="audio-quality" min="1" max="10" step="1" value="7">
+                            <div class="quality-indicator">
+                                <span>Smaller file</span>
+                                <span>Better quality</span>
+                            </div>
+                            <p class="setting-description">Adjust if audio is important in your video</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="progress-container" id="progress-container">
+                <div class="progress-bar">
+                    <div class="progress" id="progress"></div>
+                </div>
+                <div class="progress-text" id="progress-text">Preparing to compress your video...</div>
+            </div>
+
+            <div class="actions">
+                <button id="compress-btn" class="btn btn-primary btn-lg" disabled>
+                    <span class="compress-icon">✂️</span>
+                    <span>Compress Video</span>
+                </button>
+                <button id="reset-btn" class="btn btn-secondary">
+                    <span class="reset-icon">🔄</span>
+                    <span>Start Over</span>
+                </button>
+            </div>
+
+            <div class="result" id="result">
+                <h3>🎉 Compression Complete!</h3>
+                <div class="result-info">
+                    <div class="result-card">
+                        <div class="result-label">Original Size</div>
+                        <div class="result-value" id="original-size">-</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-label">Compressed Size</div>
+                        <div class="result-value" id="compressed-size">-</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-label">Savings</div>
+                        <div class="result-value savings" id="savings">-</div>
+                    </div>
+                </div>
+                <button id="download-btn" class="btn btn-primary btn-lg">
+                    <span class="download-icon">⬇️</span>
+                    <span>Download Compressed Video</span>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; <span id="current-year"></span> Easy Video Compressor. All rights reserved.</p>
+    </footer>
+
+    <div id="toast" class="toast">
+        <span class="toast-icon">ℹ️</span>
+        <span id="toast-message">Operation completed</span>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set current year in footer
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+            
+            // DOM elements
+            const uploadArea = document.getElementById('upload-area');
+            const videoFileInput = document.getElementById('video-file');
+            const fileInfo = document.getElementById('file-info');
+            const fileName = document.getElementById('file-name');
+            const fileSize = document.getElementById('file-size');
+            const fileDuration = document.getElementById('file-duration');
+            const fileResolution = document.getElementById('file-resolution');
+            const originalVideoContainer = document.getElementById('original-video-container');
+            const compressedVideoContainer = document.getElementById('compressed-video-container');
+            const originalVideo = document.getElementById('original-video');
+            const compressedVideo = document.getElementById('compressed-video');
+            const originalVideoLabel = originalVideoContainer.querySelector('.video-label');
+            const compressedVideoLabel = compressedVideoContainer.querySelector('.video-label');
+            const compressBtn = document.getElementById('compress-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const downloadBtn = document.getElementById('download-btn');
+            const result = document.getElementById('result');
+            const originalSize = document.getElementById('original-size');
+            const compressedSize = document.getElementById('compressed-size');
+            const savings = document.getElementById('savings');
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toast-message');
+            const progressContainer = document.getElementById('progress-container');
+            const progressBar = document.getElementById('progress');
+            const progressText = document.getElementById('progress-text');
+            
+            // Quality indicators
+            const qualityLabels = [
+                "Lowest (1/10)",
+                "Low (2/10)",
+                "Medium (3/10)",
+                "Medium (4/10)",
+                "Medium (5/10)",
+                "Good (6/10)",
+                "Good (7/10)",
+                "High (8/10)",
+                "Very High (9/10)",
+                "Maximum (10/10)"
+            ];
+            
+            // File handling
+            uploadArea.addEventListener('click', function() {
+                videoFileInput.click();
+            });
+            
+            // Drag and drop functionality
+            uploadArea.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                uploadArea.style.borderColor = '#4361ee';
+                uploadArea.style.backgroundColor = 'rgba(67, 97, 238, 0.1)';
+            });
+            
+            uploadArea.addEventListener('dragleave', function() {
+                uploadArea.style.borderColor = '#dee2e6';
+                uploadArea.style.backgroundColor = '#f8f9fa';
+            });
+            
+            uploadArea.addEventListener('drop', function(e) {
+                e.preventDefault();
+                uploadArea.style.borderColor = '#dee2e6';
+                uploadArea.style.backgroundColor = '#f8f9fa';
+                
+                if (e.dataTransfer.files.length) {
+                    videoFileInput.files = e.dataTransfer.files;
+                    handleFileSelection();
+                }
+            });
+            
+            videoFileInput.addEventListener('change', handleFileSelection);
+            
+            function handleFileSelection() {
+                const file = videoFileInput.files[0];
+                if (!file) return;
+                
+                // Show file info
+                fileInfo.style.display = 'flex';
+                fileName.textContent = file.name.length > 20 
+                    ? file.name.substring(0, 17) + '...' 
+                    : file.name;
+                fileSize.textContent = formatFileSize(file.size);
+                
+                // Create video preview
+                const url = URL.createObjectURL(file);
+                originalVideo.src = url;
+                originalVideo.style.display = 'block';
+                
+                // Hide placeholder and show video
+                originalVideoContainer.classList.remove('empty');
+                originalVideoContainer.querySelector('.video-placeholder').style.display = 'none';
+                originalVideoLabel.style.display = 'block';
+                
+                // When video metadata is loaded
+                originalVideo.onloadedmetadata = function() {
+                    fileDuration.textContent = formatDuration(originalVideo.duration);
+                    fileResolution.textContent = `${originalVideo.videoWidth}×${originalVideo.videoHeight}`;
+                    compressBtn.disabled = false;
+                    
+                    // Set default resolution to match original
+                    const resolutionSelect = document.getElementById('resolution');
+                    const originalResolution = `${originalVideo.videoWidth}x${originalVideo.videoHeight}`;
+                    
+                    // Check if original resolution exists in options
+                    let hasOriginalOption = false;
+                    for (let i = 0; i < resolutionSelect.options.length; i++) {
+                        if (resolutionSelect.options[i].value === originalResolution) {
+                            hasOriginalOption = true;
+                            break;
+                        }
+                    }
+                    
+                    if (!hasOriginalOption) {
+                        // Add original resolution option
+                        const option = document.createElement('option');
+                        option.value = originalResolution;
+                        option.textContent = `Original (${originalResolution})`;
+                        resolutionSelect.insertBefore(option, resolutionSelect.options[1]);
+                    }
+                    
+                    // Set selected option
+                    resolutionSelect.value = originalResolution;
+                };
+                
+                originalVideo.onerror = function() {
+                    showToast('Error loading video file', 'error');
+                    resetTool();
+                };
+            }
+            
+            // Compress button click
+            compressBtn.addEventListener('click', function() {
+                const file = videoFileInput.files[0];
+                if (!file) {
+                    showToast('Please select a video file first', 'error');
+                    return;
+                }
+                
+                // Show progress
+                progressContainer.style.display = 'block';
+                progressBar.style.width = '0%';
+                progressText.textContent = 'Starting compression...';
+                compressBtn.disabled = true;
+                
+                // Hide result if shown
+                result.style.display = 'none';
+                
+                // Simulate compression (in a real app, this would be an actual API call)
+                simulateCompression(file);
+            });
+            
+            // Reset button
+            resetBtn.addEventListener('click', resetTool);
+            
+            // Download button
+            downloadBtn.addEventListener('click', function() {
+                // In a real app, this would download the actual compressed file
+                showToast('Download started', 'success');
+            });
+            
+            // Helper functions
+            function formatFileSize(bytes) {
+                if (bytes === 0) return '0 Bytes';
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+            
+            function formatDuration(seconds) {
+                const minutes = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+            }
+            
+            function simulateCompression(file) {
+                // Simulate compression progress
+                let progress = 0;
+                const interval = setInterval(() => {
+                    progress += Math.random() * 10 + 5;
+                    if (progress > 100) progress = 100;
+                    
+                    progressBar.style.width = progress + '%';
+                    progressText.textContent = getProgressMessage(progress);
+                    
+                    if (progress === 100) {
+                        clearInterval(interval);
+                        compressionComplete(file);
+                    }
+                }, 300);
+            }
+            
+            function getProgressMessage(progress) {
+                if (progress < 20) return 'Analyzing video...';
+                if (progress < 40) return 'Preparing compression...';
+                if (progress < 60) return 'Compressing video...';
+                if (progress < 80) return 'Optimizing output...';
+                return 'Finalizing...';
+            }
+            
+            function compressionComplete(file) {
+                // For demo purposes, we'll create a dummy compressed video
+                const originalSizeBytes = file.size;
+                const compressedSizeBytes = Math.floor(originalSizeBytes * (0.3 + Math.random() * 0.3)); // 30-60% of original
+                
+                // Create a dummy video blob
+                const blob = new Blob(['Simulated compressed video content'], { type: 'video/mp4' });
+                const url = URL.createObjectURL(blob);
+                
+                // Show compressed video
+                compressedVideo.src = url;
+                compressedVideo.style.display = 'block';
+                compressedVideoContainer.classList.remove('empty');
+                compressedVideoContainer.querySelector('.video-placeholder').style.display = 'none';
+                compressedVideoLabel.style.display = 'block';
+                
+                // Show result
+                result.style.display = 'block';
+                originalSize.textContent = formatFileSize(originalSizeBytes);
+                compressedSize.textContent = formatFileSize(compressedSizeBytes);
+                
+                const savingsPercent = Math.floor((1 - compressedSizeBytes / originalSizeBytes) * 100);
+                savings.textContent = `${savingsPercent}% smaller`;
+                
+                // Hide progress
+                progressContainer.style.display = 'none';
+                
+                // Enable download button
+                downloadBtn.disabled = false;
+                
+                showToast('Video compressed successfully!', 'success');
+            }
+            
+            function resetTool() {
+                videoFileInput.value = '';
+                fileInfo.style.display = 'none';
+                
+                // Reset original video
+                originalVideo.src = '';
+                originalVideo.style.display = 'none';
+                originalVideoContainer.classList.add('empty');
+                originalVideoContainer.querySelector('.video-placeholder').style.display = 'block';
+                originalVideoLabel.style.display = 'none';
+                
+                // Reset compressed video
+                compressedVideo.src = '';
+                compressedVideo.style.display = 'none';
+                compressedVideoContainer.classList.add('empty');
+                compressedVideoContainer.querySelector('.video-placeholder').style.display = 'block';
+                compressedVideoLabel.style.display = 'none';
+                
+                // Reset buttons and progress
+                compressBtn.disabled = true;
+                progressContainer.style.display = 'none';
+                result.style.display = 'none';
+                
+                // Reset settings to defaults
+                document.getElementById('resolution').value = 'original';
+                document.getElementById('quality').value = 7;
+                document.getElementById('audio-quality').value = 7;
+                document.getElementById('output-format').value = 'mp4';
+            }
+            
+            function showToast(message, type = 'info') {
+                toast.className = 'toast';
+                toastMessage.textContent = message;
+                
+                // Set type-specific styles
+                if (type === 'success') {
+                    toast.classList.add('success');
+                    toast.querySelector('.toast-icon').textContent = '✓';
+                } else if (type === 'error') {
+                    toast.classList.add('error');
+                    toast.querySelector('.toast-icon').textContent = '✕';
+                } else {
+                    toast.querySelector('.toast-icon').textContent = 'ℹ️';
+                }
+                
+                // Show toast
+                toast.classList.add('show');
+                
+                // Hide after delay
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            }
+        });
+    </script>
+</body>
+</html>
