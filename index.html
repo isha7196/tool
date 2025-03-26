@@ -13,8 +13,8 @@
             font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #666; /* Medium gray background */
-            color: #000; /* Black text */
+            background-color: #666;
+            color: #000;
         }
 
         /* Header */
@@ -35,6 +35,13 @@
             font-size: 1.2rem;
         }
 
+        .header-description {
+            max-width: 800px;
+            margin: 15px auto 0;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
         /* Main Content */
         main {
             padding: 20px;
@@ -52,7 +59,7 @@
 
         /* Tool Box */
         .tool-box {
-            background-color: #fff; /* White tool box */
+            background-color: #fff;
             border-radius: 10px;
             padding: 20px;
             text-align: center;
@@ -73,7 +80,7 @@
         .tool-box h3 {
             margin: 0;
             font-size: 1.2rem;
-            color: #000; /* Black text */
+            color: #000;
         }
 
         /* Background Image */
@@ -83,11 +90,30 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('https://via.placeholder.com/1920x1080.png?text=Computer+Tools+Background'); /* Replace with your image */
+            background-image: url('https://via.placeholder.com/1920x1080.png?text=Computer+Tools+Background');
             background-size: cover;
             background-position: center;
-            opacity: 0.2; /* Light aesthetic effect */
+            opacity: 0.2;
             z-index: -1;
+        }
+
+        /* Advertisement Section */
+        .ad-section {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 30px auto;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            max-width: 1000px;
+        }
+
+        .ad-label {
+            color: #777;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         /* Footer */
@@ -95,9 +121,23 @@
             background-color: #333;
             color: #fff;
             text-align: center;
-            padding: 10px;
+            padding: 20px;
             position: relative;
             margin-top: 40px;
+        }
+
+        .contact-email {
+            margin-top: 15px;
+            font-size: 1rem;
+        }
+
+        .contact-email a {
+            color: #4da6ff;
+            text-decoration: none;
+        }
+
+        .contact-email a:hover {
+            text-decoration: underline;
         }
 
         /* Responsive Design */
@@ -105,9 +145,12 @@
             .tool-grid {
                 grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             }
-
             header h1 {
                 font-size: 2rem;
+            }
+            .header-description {
+                font-size: 0.9rem;
+                padding: 0 15px;
             }
         }
 
@@ -126,143 +169,187 @@
     <header>
         <h1>Tools Website</h1>
         <p>Your one-stop solution for all online tools</p>
+        <div class="header-description">
+            <p>Discover our powerful collection of free online tools designed to simplify your work. From document editing to file conversion, 
+            our tools are fast, secure, and easy to use. Boost your productivity with just a few clicks!</p>
+        </div>
     </header>
 
     <!-- Main Content -->
     <main>
         <div class="tool-grid">
             <!-- Image Compression -->
-            <a href="/tool/img-compress.html" class="tool-link">
-                <div class="tool-box">
-                    <img src="https://img.icons8.com/color/96/image--v1.png" alt="Image Compression Icon">
-                    <h3>Image Compression</h3>
-                </div>
-            </a>
+            <a href="/too/img-compress.html" class="tool-link">
+    <div class="tool-box">
+        <img src="https://img.icons8.com/color/96/image--v1.png" alt="Image Compression">
+        <h3>Image Compression</h3>
+    </div>
+</a>
 
             <!-- Image Resizer -->
             <a href="/tool/img-resize.html" class="tool-link">
-                <div class="tool-box">
-                    <img src="https://img.icons8.com/color/96/resize.png" alt="Image Resizer Icon">
-                    <h3>Image Resizer</h3>
-                </div>
-            </a>
+    <div class="tool-box">
+        <img src="https://img.icons8.com/color/96/resize.png" alt="Image Resizer">
+        <h3>Image Resizer</h3>
+    </div>
+</a>
+
             <!-- Image Converter -->
-            <a href="/tool/img-convert.html" class="tool-link">
-                <div class="tool-box">
-                    <img src="https://img.icons8.com/color/96/image-conversion.png" alt="Image Converter Icon">
-                    <h3>Image Converter</h3>
-                </div>
-            </a>
+<a href="/tool/img-convert.html" class="tool-link">
+    <div class="tool-box">
+        <img src="https://img.icons8.com/color/96/switch-camera.png" alt="Image Converter">
+        <h3>Image Converter</h3>
+    </div>
+</a>
 
             <!-- Document Scanner -->
-           <a href="/tool/DOC-SCAN.html" class="tool-link">
-                <div class="tool-box">
-                    <img src="https://img.icons8.com/color/96/scanner.png" alt="Scanner Tools Icon">
-                    <h3>Document Scanner</h3>
-                </div>
-            </a>
+            <a href="/tool/DOC-SCAN.html" class="tool-link">
+    <div class="tool-box">
+        <img src="https://img.icons8.com/color/96/scanner.png" alt="Document Scanner">
+        <h3>Document Scanner</h3>
+    </div>
+</a>
 
             <!-- Excel Editor -->
-           <a href="/tool/exl-edit.html" class="tool-link">
+           <a href="/tool/exel-edit.html" class="tool-link">
     <div class="tool-box">
-        <img src="https://img.icons8.com/color/96/ms-excel.png" alt="Excel Editor Icon">
+        <img src="https://img.icons8.com/color/96/ms-excel.png" alt="Excel Editor">
         <h3>Excel Editor</h3>
+    </div>
+</a>
+            <!-- Excel Converter -->
+            <a href="/tool/excel-conv.html" class="tool-link">
+    <div class="tool-box">
+        <img src="https://img.icons8.com/color/96/convert-document.png" alt="Excel Converter">
+        <h3>Excel Converter</h3>
     </div>
 </a>
 
             <!-- Word Editor -->
            <a href="word-editor.html" class="tool-link">
     <div class="tool-box">
-        <img src="https://img.icons8.com/color/96/ms-word.png" alt="Word Editor Icon">
+        <img src="https://img.icons8.com/color/96/ms-word.png" alt="Word Editor">
         <h3>Word Editor</h3>
     </div>
 </a>
 
-            <!-- Signature Creator -->
-            <a href="signature-creator.html" class="tool-link">
+            <!-- Document Commenter -->
+            <a href="/tool/add-comment.html" class="tool-link">
     <div class="tool-box">
-        <img src="https://img.icons8.com/color/96/signature.png" alt="Signature Creator Icon">
+        <img src="https://img.icons8.com/color/96/comments.png" alt="Document Commenter">
+        <h3>Document Commenter</h3>
+    </div>
+</a>
+
+            <!-- Signature Creator -->
+           <a href="signature-creator.html" class="tool-link">
+    <div class="tool-box">
+        <img src="https://img.icons8.com/color/96/signature.png" alt="Signature Creator">
         <h3>Signature Creator</h3>
     </div>
 </a>
 
             <!-- PDF Converter -->
+<a href="pdf-converter.html" class="tool-link" aria-label="PDF Conversion Tool">
+    <div class="tool-box">
+        <img src="https://img.icons8.com/color/96/pdf.png" alt="PDF File Icon">
+        <h3>PDF Converter</h3>
+        <p class="tool-description">Convert to/from multiple formats</p>
+    </div>
+</a>
+
+            <!-- PDF Merger -->
             <div class="tool-box">
-                <img src="https://img.icons8.com/color/96/pdf.png" alt="PDF Tools Icon">
-                <h3>PDF Converter</h3>
+                <img src="https://img.icons8.com/color/96/merge-pdf.png" alt="PDF Merger">
+                <h3>PDF Merger</h3>
             </div>
 
             <!-- Video Compressor -->
             <div class="tool-box">
-                <img src="https://img.icons8.com/color/96/video.png" alt="Video Tools Icon">
+                <img src="https://img.icons8.com/color/96/video.png" alt="Video Compressor">
                 <h3>Video Compressor</h3>
             </div>
 
             <!-- Audio Trimmer -->
             <div class="tool-box">
-                <img src="https://img.icons8.com/color/96/audio-wave.png" alt="Audio Tools Icon">
+                <img src="https://img.icons8.com/color/96/audio-wave.png" alt="Audio Trimmer">
                 <h3>Audio Trimmer</h3>
-            </div>
-
-            <!-- Text Formatter -->
-            <div class="tool-box">
-                <img src="https://img.icons8.com/color/96/text.png" alt="Text Tools Icon">
-                <h3>Text Formatter</h3>
             </div>
 
             <!-- Code Minifier -->
             <div class="tool-box">
-                <img src="https://img.icons8.com/color/96/code.png" alt="Code Tools Icon">
+                <img src="https://img.icons8.com/color/96/code.png" alt="Code Minifier">
                 <h3>Code Minifier</h3>
             </div>
 
-            <!-- File Converter -->
+            <!-- Article Prompt Generator -->
             <div class="tool-box">
-                <img src="https://img.icons8.com/color/96/file-conversion.png" alt="File Converter Icon">
-                <h3>File Converter</h3>
+                <img src="https://img.icons8.com/color/96/idea.png" alt="Article Prompt Generator">
+                <h3>Article Prompt Generator</h3>
             </div>
 
             <!-- QR Code Generator -->
             <div class="tool-box">
-                <img src="https://img.icons8.com/color/96/qr-code.png" alt="QR Code Generator Icon">
+                <img src="https://img.icons8.com/color/96/qr-code.png" alt="QR Code Generator">
                 <h3>QR Code Generator</h3>
             </div>
 
             <!-- Password Generator -->
             <div class="tool-box">
-                <img src="https://img.icons8.com/color/96/password.png" alt="Password Generator Icon">
+                <img src="https://img.icons8.com/color/96/password.png" alt="Password Generator">
                 <h3>Password Generator</h3>
             </div>
 
             <!-- Event Scheduler -->
             <div class="tool-box">
-                <img src="https://img.icons8.com/color/96/calendar--v1.png" alt="Calendar Tools Icon">
+                <img src="https://img.icons8.com/color/96/calendar--v1.png" alt="Event Scheduler">
                 <h3>Event Scheduler</h3>
             </div>
 
             <!-- Chart Generator -->
             <div class="tool-box">
-                <img src="https://img.icons8.com/color/96/line-chart.png" alt="Chart Tools Icon">
+                <img src="https://img.icons8.com/color/96/line-chart.png" alt="Chart Generator">
                 <h3>Chart Generator</h3>
             </div>
 
             <!-- Data Analyzer -->
             <div class="tool-box">
-                <img src="https://img.icons8.com/color/96/data-configuration.png" alt="Data Tools Icon">
+                <img src="https://img.icons8.com/color/96/data-configuration.png" alt="Data Analyzer">
                 <h3>Data Analyzer</h3>
             </div>
 
             <!-- Email Validator -->
             <div class="tool-box">
-                <img src="https://img.icons8.com/color/96/email.png" alt="Email Tools Icon">
+                <img src="https://img.icons8.com/color/96/email.png" alt="Email Validator">
                 <h3>Email Validator</h3>
             </div>
+        </div>
+
+        <!-- Advertisement Section -->
+        <div class="ad-section">
+            <div class="ad-label">Advertisement</div>
+            <!-- Google AdSense Code -->
+            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-YOUR_PUBLISHER_ID"
+                crossorigin="anonymous"></script>
+            <!-- Your Ad Unit -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-YOUR_PUBLISHER_ID"
+                data-ad-slot="YOUR_AD_SLOT"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
         </div>
     </main>
 
     <!-- Footer -->
     <footer>
-        <p>&copy; 2023 Tools Website. All rights reserved.</p>
+        <p>&copy; 2025 Tools Website. All rights reserved.</p>
+        <div class="contact-email">
+            Contact us at: <a href="mailto:support@toolswebsite.com">support@toolswebsite.com</a>
+        </div>
     </footer>
 </body>
 </html>
