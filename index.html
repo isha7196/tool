@@ -3,374 +3,480 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Explore a wide range of tools including image compression, scanners, XLS tools, word tools, signature creators, and more.">
-    <meta name="keywords" content="tools, image compression, scanner tools, XLS tools, word tools, signature creator, online tools">
-    <meta name="author" content="Your Name">
-    <title>Tools Website - Home</title>
+    <meta name="description" content="Toolify - Premium online tools for productivity. Text to speech, PDF tools, image tools and more.">
+    <meta name="keywords" content="online tools, productivity tools, text to speech, PDF merger, image tools">
+    <title>Toolify - Premium Online Tools</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        /* General Styles */
-        body {
-            font-family: 'Arial', sans-serif;
+        :root {
+            --primary: #2b2d42;
+            --secondary: #1a1a1a;
+            --accent: #4361ee;
+            --text: #333;
+            --card-bg: #ffffff;
+            --logo-color: #f8f9fa;
+        }
+        
+        * {
             margin: 0;
             padding: 0;
-            background-color: #666;
-            color: #000;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
         }
-
+        
+        body {
+            background-color: #f8f9fa;
+            color: var(--text);
+        }
+        
         /* Header */
         header {
-            background-color: #333;
-            color: #fff;
-            padding: 20px;
-            text-align: center;
-        }
-
-        header h1 {
-            margin: 0;
-            font-size: 2.5rem;
-        }
-
-        header p {
-            margin: 10px 0 0;
-            font-size: 1.2rem;
-        }
-
-        .header-description {
-            max-width: 800px;
-            margin: 15px auto 0;
-            font-size: 1rem;
-            line-height: 1.6;
-        }
-
-        /* Main Content */
-        main {
-            padding: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        /* Tool Grid */
-        .tool-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            padding: 20px;
-        }
-
-        /* Tool Box */
-        .tool-box {
-            background-color: #fff;
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s ease;
-        }
-
-        .tool-box:hover {
-            transform: translateY(-10px);
-        }
-
-        .tool-box img {
-            width: 60px;
-            height: 60px;
-            margin-bottom: 15px;
-        }
-
-        .tool-box h3 {
-            margin: 0;
-            font-size: 1.2rem;
-            color: #000;
-        }
-
-        /* Background Image */
-        .background-image {
-            position: fixed;
+            background: var(--secondary);
+            padding: 1.5rem 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            position: sticky;
             top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('https://via.placeholder.com/1920x1080.png?text=Computer+Tools+Background');
-            background-size: cover;
-            background-position: center;
-            opacity: 0.2;
-            z-index: -1;
-        }
-
-        /* Advertisement Section */
-        .ad-section {
-            background-color: #fff;
-            border-radius: 8px;
-            padding: 20px;
-            margin: 30px auto;
+            z-index: 100;
             text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            max-width: 1000px;
         }
-
-        .ad-label {
-            color: #777;
-            font-size: 0.9rem;
-            margin-bottom: 10px;
-            text-transform: uppercase;
+        
+        .logo {
+            display: inline-block;
+            text-decoration: none;
+            margin-bottom: 1rem;
+        }
+        
+        .logo-icon {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #4361ee, #3a0ca3);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        }
+        
+        .logo-text {
+            font-size: 2.2rem;
+            font-weight: 800;
+            font-family: 'Montserrat', sans-serif;
+            color: var(--logo-color);
             letter-spacing: 1px;
+            text-transform: uppercase;
+            background: linear-gradient(to right, #f8f9fa, #d3d9df);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
         }
-
+        
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        
+        .nav-link {
+            color: var(--logo-color);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1.5rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .nav-link:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        /* Main Content */
+        .main-content {
+            display: block;
+        }
+        
+        /* Tools Grid */
+        .tools-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 1.2rem;
+        }
+        
+        .tool-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+            color: var(--text);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        }
+        
+        .tool-icon {
+            font-size: 2.2rem;
+            margin-bottom: 0.8rem;
+            display: inline-block;
+            background: linear-gradient(135deg, var(--icon-color1), var(--icon-color2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2));
+        }
+        
+        .text-speak-icon {
+            background: linear-gradient(135deg, #4361ee, #3a0ca3);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transform: scale(1.1);
+        }
+        
+        .tool-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+            color: var(--primary);
+        }
+        
+        .tool-desc {
+            font-size: 0.8rem;
+            color: #666;
+            line-height: 1.4;
+        }
+        
+        /* Contact Section */
+        .contact-section {
+            display: none;
+            max-width: 600px;
+            margin: 3rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+        
+        .contact-title {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .contact-email {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background: linear-gradient(135deg, #4361ee, #3a0ca3);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 500;
+            margin-top: 1rem;
+        }
+        
+        /* Ad Container */
+        .ad-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .ad-label {
+            color: #666;
+            font-size: 0.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
         /* Footer */
         footer {
-            background-color: #333;
-            color: #fff;
+            background: var(--secondary);
+            color: white;
             text-align: center;
-            padding: 20px;
-            position: relative;
-            margin-top: 40px;
+            padding: 2rem;
+            margin-top: 3rem;
         }
-
-        .contact-email {
-            margin-top: 15px;
-            font-size: 1rem;
-        }
-
-        .contact-email a {
-            color: #4da6ff;
+        
+        .footer-email {
+            color: #8d99ae;
             text-decoration: none;
-        }
-
-        .contact-email a:hover {
-            text-decoration: underline;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .tool-grid {
-                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            }
-            header h1 {
-                font-size: 2rem;
-            }
-            .header-description {
-                font-size: 0.9rem;
-                padding: 0 15px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .tool-grid {
-                grid-template-columns: 1fr;
-            }
         }
     </style>
 </head>
 <body>
-    <!-- Background Image -->
-    <div class="background-image"></div>
-
-    <!-- Header -->
     <header>
-        <h1>Tools Website</h1>
-        <p>Your one-stop solution for all online tools</p>
-        <div class="header-description">
-            <p>Discover our powerful collection of free online tools designed to simplify your work. From document editing to file conversion, 
-            our tools are fast, secure, and easy to use. Boost your productivity with just a few clicks!</p>
+        <a href="#" class="logo">
+            <i class="fas fa-magic logo-icon"></i>
+            <span class="logo-text">Toolify</span>
+        </a>
+        
+        <div class="nav-links">
+            <a href="#" class="nav-link home-link">Home</a>
+            <a href="#" class="nav-link contact-link">Contact</a>
         </div>
     </header>
-
-    <!-- Main Content -->
-    <main>
-        <div class="tool-grid">
-            <!-- Image Compression -->
-            <a href="/too/img-compress.html" class="tool-link">
-    <div class="tool-box">
-        <img src="https://img.icons8.com/color/96/image--v1.png" alt="Image Compression">
-        <h3>Image Compression</h3>
+    
+    <div class="main-content" id="mainContent">
+        <!-- Tools Section -->
+        <div class="tools-container" id="toolsSection">
+            <div class="tools-grid">
+                <!-- Text Speak -->
+               <a href="https://example.com/text-speak" class="tool-card">
+    <div class="tool-icon">
+        <i class="fas fa-volume-up text-speak-icon"></i>
     </div>
+    <h3 class="tool-title">Text Speak</h3>
+    <p class="tool-desc">Convert text to natural speech</p>
 </a>
 
-            <!-- Image Resizer -->
-            <a href="/tool/img-resize.html" class="tool-link">
-    <div class="tool-box">
-        <img src="https://img.icons8.com/color/96/resize.png" alt="Image Resizer">
-        <h3>Image Resizer</h3>
-    </div>
-</a>
-
-            <!-- Image Converter -->
-<a href="/tool/img-convert.html" class="tool-link">
-    <div class="tool-box">
-        <img src="https://img.icons8.com/color/96/switch-camera.png" alt="Image Converter">
-        <h3>Image Converter</h3>
-    </div>
-</a>
-
-            <!-- Document Scanner -->
-            <a href="/tool/DOC-SCAN.html" class="tool-link">
-    <div class="tool-box">
-        <img src="https://img.icons8.com/color/96/scanner.png" alt="Document Scanner">
-        <h3>Document Scanner</h3>
-    </div>
-</a>
-
-            <!-- Excel Editor -->
-           <a href="/tool/exel-edit.html" class="tool-link">
-    <div class="tool-box">
-        <img src="https://img.icons8.com/color/96/ms-excel.png" alt="Excel Editor">
-        <h3>Excel Editor</h3>
-    </div>
-</a>
-            <!-- Excel Converter -->
-            <a href="/tool/excel-conv.html" class="tool-link">
-    <div class="tool-box">
-        <img src="https://img.icons8.com/color/96/convert-document.png" alt="Excel Converter">
-        <h3>Excel Converter</h3>
-    </div>
-</a>
-
-            <!-- Word Editor -->
-           <a href="word-editor.html" class="tool-link">
-    <div class="tool-box">
-        <img src="https://img.icons8.com/color/96/ms-word.png" alt="Word Editor">
-        <h3>Word Editor</h3>
-    </div>
-</a>
-
-            <!-- Document Commenter -->
-            <a href="/tool/add-comment.html" class="tool-link">
-    <div class="tool-box">
-        <img src="https://img.icons8.com/color/96/comments.png" alt="Document Commenter">
-        <h3>Document Commenter</h3>
-    </div>
-</a>
-
-            <!-- Signature Creator -->
-           <a href="signature-creator.html" class="tool-link">
-    <div class="tool-box">
-        <img src="https://img.icons8.com/color/96/signature.png" alt="Signature Creator">
-        <h3>Signature Creator</h3>
-    </div>
-</a>
-
-            <!-- PDF Converter -->
-<a href="pdf-converter.html" class="tool-link" aria-label="PDF Conversion Tool">
-    <div class="tool-box">
-        <img src="https://img.icons8.com/color/96/pdf.png" alt="PDF File Icon">
-        <h3>PDF Converter</h3>
-        <p class="tool-description">Convert to/from multiple formats</p>
-    </div>
-</a>
-
-            <!-- PDF Merger -->
-           <a href="/tool/pdf-merger.html" class="tool-link" aria-label="PDF Merger Tool">
-    <div class="tool-box">
-        <img src="https://img.icons8.com/color/96/merge-pdf.png" alt="PDF Merger">
-        <h3>PDF Merger</h3>
-        <p class="tool-description">Combine multiple PDFs into one</p>
-    </div>
-</a>
-
-            <!-- Video Compressor -->
-            <a href="video-compressor.html" class="tool-link" aria-label="Video Compression Tool" data-tool="video-compressor">
-    <div class="tool-box">
-        <img src="https://img.icons8.com/color/96/video.png" alt="Video Compressor">
-        <h3>Video Compressor</h3>
-        <div class="tool-meta">
-            <span class="tool-format">MP4, MOV, AVI</span>
-            <span class="tool-size">Up to 4K</span>
+                
+                <!-- All other tools remain the same as before -->
+                <!-- Quiz MCQs -->
+                <a href="#" class="tool-card" style="--icon-color1: #7209b7; --icon-color2: #b5179e;">
+                    <div class="tool-icon">
+                        <i class="fas fa-question"></i>
+                    </div>
+                    <h3 class="tool-title">Quiz MCQs</h3>
+                    <p class="tool-desc">Generate quiz questions</p>
+                </a>
+                
+                <!-- PDF Merger -->
+                <a href="#" class="tool-card" style="--icon-color1: #f72585; --icon-color2: #b5179e;">
+                    <div class="tool-icon">
+                        <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <h3 class="tool-title">PDF Merger</h3>
+                    <p class="tool-desc">Combine PDF files</p>
+                </a>
+                
+                <!-- Password Gen -->
+                <a href="#" class="tool-card" style="--icon-color1: #4cc9f0; --icon-color2: #4895ef;">
+                    <div class="tool-icon">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <h3 class="tool-title">Password Gen</h3>
+                    <p class="tool-desc">Create secure passwords</p>
+                </a>
+                
+                <!-- MCQs Gen -->
+                <a href="#" class="tool-card" style="--icon-color1: #3a0ca3; --icon-color2: #7209b7;">
+                    <div class="tool-icon">
+                        <i class="fas fa-list-ol"></i>
+                    </div>
+                    <h3 class="tool-title">MCQs Gen</h3>
+                    <p class="tool-desc">Make multiple choice Qs</p>
+                </a>
+                
+                <!-- Logo Gen -->
+                <a href="#" class="tool-card" style="--icon-color1: #f72585; --icon-color2: #b5179e;">
+                    <div class="tool-icon">
+                        <i class="fas fa-paint-brush"></i>
+                    </div>
+                    <h3 class="tool-title">Logo Gen</h3>
+                    <p class="tool-desc">Design professional logos</p>
+                </a>
+                
+                <!-- Image Compressor -->
+                <a href="#" class="tool-card" style="--icon-color1: #4cc9f0; --icon-color2: #4361ee;">
+                    <div class="tool-icon">
+                        <i class="fas fa-compress-alt"></i>
+                    </div>
+                    <h3 class="tool-title">Image Compressor</h3>
+                    <p class="tool-desc">Reduce image size</p>
+                </a>
+                
+                <!-- Image Resizer -->
+                <a href="#" class="tool-card" style="--icon-color1: #7209b7; --icon-color2: #3a0ca3;">
+                    <div class="tool-icon">
+                        <i class="fas fa-expand"></i>
+                    </div>
+                    <h3 class="tool-title">Image Resizer</h3>
+                    <p class="tool-desc">Resize images</p>
+                </a>
+                
+                <!-- Image Converter -->
+                <a href="#" class="tool-card" style="--icon-color1: #4895ef; --icon-color2: #4361ee;">
+                    <div class="tool-icon">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                    <h3 class="tool-title">Image Converter</h3>
+                    <p class="tool-desc">Convert image formats</p>
+                </a>
+                
+                <!-- Human AI -->
+                <a href="#" class="tool-card" style="--icon-color1: #3a0ca3; --icon-color2: #7209b7;">
+                    <div class="tool-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3 class="tool-title">Human AI</h3>
+                    <p class="tool-desc">AI text generation</p>
+                </a>
+                
+                <!-- Excel Editor -->
+                <a href="#" class="tool-card" style="--icon-color1: #2a9d8f; --icon-color2: #264653;">
+                    <div class="tool-icon">
+                        <i class="fas fa-table"></i>
+                    </div>
+                    <h3 class="tool-title">Excel Editor</h3>
+                    <p class="tool-desc">Edit spreadsheets</p>
+                </a>
+                
+                <!-- Excel Converter -->
+                <a href="#" class="tool-card" style="--icon-color1: #e9c46a; --icon-color2: #f4a261;">
+                    <div class="tool-icon">
+                        <i class="fas fa-file-export"></i>
+                    </div>
+                    <h3 class="tool-title">Excel Converter</h3>
+                    <p class="tool-desc">Convert Excel files</p>
+                </a>
+                
+                <!-- Event Scheduler -->
+                <a href="#" class="tool-card" style="--icon-color1: #f4a261; --icon-color2: #e76f51;">
+                    <div class="tool-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <h3 class="tool-title">Event Scheduler</h3>
+                    <p class="tool-desc">Plan your events</p>
+                </a>
+                
+                <!-- Code Minifier -->
+                <a href="#" class="tool-card" style="--icon-color1: #2a9d8f; --icon-color2: #264653;">
+                    <div class="tool-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3 class="tool-title">Code Minifier</h3>
+                    <p class="tool-desc">Minify your code</p>
+                </a>
+                
+                <!-- Chart Gen -->
+                <a href="#" class="tool-card" style="--icon-color1: #e9c46a; --icon-color2: #f4a261;">
+                    <div class="tool-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="tool-title">Chart Gen</h3>
+                    <p class="tool-desc">Create data charts</p>
+                </a>
+                
+                <!-- CGPA Calc -->
+                <a href="#" class="tool-card" style="--icon-color1: #4361ee; --icon-color2: #3a0ca3;">
+                    <div class="tool-icon">
+                        <i class="fas fa-calculator"></i>
+                    </div>
+                    <h3 class="tool-title">CGPA Calc</h3>
+                    <p class="tool-desc">Calculate your GPA</p>
+                </a>
+                
+                <!-- Audio Converter -->
+                <a href="#" class="tool-card" style="--icon-color1: #7209b7; --icon-color2: #3a0ca3;">
+                    <div class="tool-icon">
+                        <i class="fas fa-file-audio"></i>
+                    </div>
+                    <h3 class="tool-title">Audio Converter</h3>
+                    <p class="tool-desc">Convert audio files</p>
+                </a>
+                
+                <!-- Article Prompt -->
+                <a href="#" class="tool-card" style="--icon-color1: #f72585; --icon-color2: #b5179e;">
+                    <div class="tool-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h3 class="tool-title">Article Prompt</h3>
+                    <p class="tool-desc">Generate ideas</p>
+                </a>
+                
+                <!-- Add Commentor -->
+                <a href="#" class="tool-card" style="--icon-color1: #4cc9f0; --icon-color2: #4895ef;">
+                    <div class="tool-icon">
+                        <i class="fas fa-comment-medical"></i>
+                    </div>
+                    <h3 class="tool-title">Add Commentor</h3>
+                    <p class="tool-desc">Annotate documents</p>
+                </a>
+                
+                <!-- QR Gen -->
+                <a href="#" class="tool-card" style="--icon-color1: #2a9d8f; --icon-color2: #264653;">
+                    <div class="tool-icon">
+                        <i class="fas fa-qrcode"></i>
+                    </div>
+                    <h3 class="tool-title">QR Gen</h3>
+                    <p class="tool-desc">Create QR codes</p>
+                </a>
+                
+                <!-- Doc Scanner -->
+                <a href="#" class="tool-card" style="--icon-color1: #e9c46a; --icon-color2: #f4a261;">
+                    <div class="tool-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <h3 class="tool-title">Doc Scanner</h3>
+                    <p class="tool-desc">Digitize documents</p>
+                </a>
+            </div>
+            
+            <!-- AdSense Ad at bottom of home page -->
+            <div class="ad-container">
+                <div class="ad-label">Advertisement</div>
+                <!-- Google AdSense Code -->
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
+                     crossorigin="anonymous"></script>
+                <!-- Home Page Bottom Ad -->
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                     data-ad-slot="XXXXXXXXXX"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>
+                     (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
+        </div>
+        
+        <!-- Contact Section -->
+        <div class="contact-section" id="contactSection">
+            <h2 class="contact-title">Contact Us</h2>
+            <p>Have questions or need support? Reach out to us!</p>
+            <a href="mailto:anfaal286@gmail.com" class="contact-email">
+                <i class="fas fa-envelope"></i> anfaal286@gmail.com
+            </a>
         </div>
     </div>
-</a>
-
-            <!-- Audio Trimmer -->
-            <a href="audio-trimmer.html" class="tool-link" aria-label="Audio Trimming Tool" data-tool="audio-trimmer">
-    <div class="tool-box">
-        <img src="https://img.icons8.com/color/96/audio-wave.png" alt="Audio Trimmer">
-        <h3>Audio Trimmer</h3>
-        <div class="tool-meta">
-            <span class="tool-formats">MP3, WAV, OGG</span>
-            <span class="tool-features">Cut & Fade</span>
-        </div>
-    </div>
-</a>
-
-            <!-- Code Minifier -->
-            <a href="code-minifier.html" class="tool-link" aria-label="Code Minification Tool" data-tool="code-minifier">
-    <div class="tool-box">
-        <img src="https://img.icons8.com/color/96/code.png" alt="Code Minifier">
-        <h3>Code Minifier</h3>
-        <div class="tool-meta">
-            <span class="tool-languages">JS, CSS, HTML</span>
-            <span class="tool-feature">+Obfuscation</span>
-        </div>
-    </div>
-</a>
-
-            <!-- Article Prompt Generator -->
-            <div class="tool-box">
-                <img src="https://img.icons8.com/color/96/idea.png" alt="Article Prompt Generator">
-                <h3>Article Prompt Generator</h3>
-            </div>
-
-            <!-- QR Code Generator -->
-            <div class="tool-box">
-                <img src="https://img.icons8.com/color/96/qr-code.png" alt="QR Code Generator">
-                <h3>QR Code Generator</h3>
-            </div>
-
-            <!-- Password Generator -->
-            <div class="tool-box">
-                <img src="https://img.icons8.com/color/96/password.png" alt="Password Generator">
-                <h3>Password Generator</h3>
-            </div>
-
-            <!-- Event Scheduler -->
-            <div class="tool-box">
-                <img src="https://img.icons8.com/color/96/calendar--v1.png" alt="Event Scheduler">
-                <h3>Event Scheduler</h3>
-            </div>
-
-            <!-- Chart Generator -->
-            <div class="tool-box">
-                <img src="https://img.icons8.com/color/96/line-chart.png" alt="Chart Generator">
-                <h3>Chart Generator</h3>
-            </div>
-
-            <!-- Data Analyzer -->
-            <div class="tool-box">
-                <img src="https://img.icons8.com/color/96/data-configuration.png" alt="Data Analyzer">
-                <h3>Data Analyzer</h3>
-            </div>
-
-            <!-- Email Validator -->
-            <div class="tool-box">
-                <img src="https://img.icons8.com/color/96/email.png" alt="Email Validator">
-                <h3>Email Validator</h3>
-            </div>
-        </div>
-
-        <!-- Advertisement Section -->
-        <div class="ad-section">
-            <div class="ad-label">Advertisement</div>
-            <!-- Google AdSense Code -->
-            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-YOUR_PUBLISHER_ID"
-                crossorigin="anonymous"></script>
-            <!-- Your Ad Unit -->
-            <ins class="adsbygoogle"
-                style="display:block"
-                data-ad-client="ca-pub-YOUR_PUBLISHER_ID"
-                data-ad-slot="YOUR_AD_SLOT"
-                data-ad-format="auto"
-                data-full-width-responsive="true"></ins>
-            <script>
-                (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
-        </div>
-    </main>
-
-    <!-- Footer -->
+    
     <footer>
-        <p>&copy; 2025 Tools Website. All rights reserved.</p>
-        <div class="contact-email">
-            Contact us at: <a href="mailto:support@toolswebsite.com">support@toolswebsite.com</a>
-        </div>
+        <p>&copy; 2025 Toolify. All rights reserved.</p>
+        <p>Contact: <a href="mailto:anfaal286@gmail.com" class="footer-email">anfaal286@gmail.com</a></p>
     </footer>
+
+    <script>
+        // Navigation functionality
+        document.querySelector('.home-link').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('toolsSection').style.display = 'block';
+            document.getElementById('contactSection').style.display = 'none';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        
+        document.querySelector('.contact-link').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('toolsSection').style.display = 'none';
+            document.getElementById('contactSection').style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
 </body>
 </html>
