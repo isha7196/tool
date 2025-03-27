@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Free online 3D chart generator tool. Create beautiful, responsive 3D charts for presentations, reports, and data visualization.">
+    <meta name="keywords" content="3D chart generator, data visualization, chart tool, responsive charts, SEO optimized chart maker">
+    <meta name="author" content="ChartGen Pro">
+    <meta name="robots" content="index, follow">
+    <title>3D Chart Generator | Create Interactive 3D Charts Online</title>
+    <link rel="canonical" href="https://yourdomain.com/3d-chart-generator" />
+    
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:title" content="3D Chart Generator | Create Interactive 3D Charts Online">
+    <meta property="og:description" content="Free online 3D chart generator tool. Create beautiful, responsive 3D charts for presentations, reports, and data visualization.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yourdomain.com/3d-chart-generator">
+    <meta property="og:image" content="https://yourdomain.com/images/3d-chart-generator-preview.jpg">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="3D Chart Generator | Create Interactive 3D Charts Online">
+    <meta name="twitter:description" content="Free online 3D chart generator tool. Create beautiful, responsive 3D charts for presentations, reports, and data visualization.">
+    <meta name="twitter:image" content="https://yourdomain.com/images/3d-chart-generator-preview.jpg">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    
+    <!-- Structured Data / Schema Markup -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "3D Chart Generator",
+      "url": "https://yourdomain.com/3d-chart-generator",
+      "description": "Free online tool to create interactive 3D charts for data visualization.",
+      "applicationCategory": "DataVisualization",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+    </script>
+    
+    <!-- CSS -->
+    <style>
+        :root {
+            --primary-color: #4285f4;
+            --secondary-color: #34a853;
+            --accent-color: #ea4335;
+            --light-gray: #f5f5f5;
+            --dark-gray: #333;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+        }
+        
+        header {
+            background-color: white;
+            box-shadow: var(--shadow);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+        
+        nav ul li a {
+            text-decoration: none;
+            color: var(--dark-gray);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: var(--primary-color);
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .hero {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 2rem 0;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--dark-gray);
+        }
+        
+        .hero p {
+            font-size: 1.1rem;
+            color: #666;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+        }
+        
+        .ad-container {
+            background-color: var(--light-gray);
+            padding: 1rem;
+            margin: 1rem 0;
+            text-align: center;
+            border-radius: 4px;
+        }
+        
+        .tool-container {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .controls-panel {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+        
+        .chart-container {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        #chart-display {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-group input, 
+        .form-group select, 
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #3367d6;
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary-color);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #2d9249;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .export-options {
+            margin-top: 1.5rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .feature-card {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+        
+        .feature-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        footer {
+            background-color: var(--dark-gray);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: left;
+        }
+        
+        .footer-column h3 {
+            margin-bottom: 1rem;
+            color: var(--light-gray);
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-column ul li a {
+            color: #bbb;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-column ul li a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #555;
+        }
+        
+        @media (max-width: 768px) {
+            .tool-container {
+                grid-template-columns: 1fr;
+            }
+            
+            nav ul {
+                display: none;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background-color: white;
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: var(--shadow);
+            }
+            
+            nav ul.show {
+                display: flex;
+            }
+            
+            nav ul li {
+                margin: 0.5rem 0;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+        }
+        
+        /* Loading spinner */
+        .spinner {
+            display: none;
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s ease-in-out infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+    
+    <!-- Chart.js and 3D chart plugins -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-3d@1.0.2/dist/chartjs-chart-3d.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">3D ChartGen</div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+            <nav>
+                <ul id="navMenu">
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#how-it-works">How It Works</a></li>
+                    <li><a href="#examples">Examples</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <main>
+        <section class="hero">
+            <h1>Create Stunning 3D Charts in Seconds</h1>
+            <p>Our free online tool helps you generate beautiful, responsive 3D charts for presentations, reports, and data visualization. No design skills required!</p>
+        </section>
+        
+        <!-- Top Ad Unit -->
+        <div class="ad-container">
+            <!-- Google AdSense Ad Unit -->
+            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+            <!-- ChartGen_Top_Leaderboard -->
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                 data-ad-slot="XXXXXXXXXX"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+        
+        <section class="tool-container">
+            <div class="controls-panel">
+                <h2>Chart Settings</h2>
+                
+                <div class="form-group">
+                    <label for="chart-type">Chart Type</label>
+                    <select id="chart-type">
+                        <option value="bar3d">3D Bar Chart</option>
+                        <option value="pie3d">3D Pie Chart</option>
+                        <option value="doughnut3d">3D Doughnut Chart</option>
+                        <option value="line3d">3D Line Chart</option>
+                        <option value="scatter3d">3D Scatter Plot</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="chart-title">Chart Title</label>
+                    <input type="text" id="chart-title" placeholder="Enter chart title" value="My 3D Chart">
+                </div>
+                
+                <div class="form-group">
+                    <label for="chart-data">Chart Data (CSV or JSON)</label>
+                    <textarea id="chart-data" placeholder="Enter data in CSV or JSON format">Label,Value
+January,65
+February,59
+March,80
+April,81
+May,56
+June,55
+July,40</textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="color-scheme">Color Scheme</label>
+                    <select id="color-scheme">
+                        <option value="default">Default</option>
+                        <option value="vibrant">Vibrant</option>
+                        <option value="pastel">Pastel</option>
+                        <option value="monochrome">Monochrome</option>
+                        <option value="custom">Custom</option>
+                    </select>
+                </div>
+                
+                <div class="form-group" id="custom-colors-group" style="display: none;">
+                    <label>Custom Colors (comma separated)</label>
+                    <input type="text" id="custom-colors" placeholder="#4285f4,#ea4335,#fbbc05,#34a853,#673ab7">
+                </div>
+                
+                <div class="form-group">
+                    <label for="animation-type">Animation</label>
+                    <select id="animation-type">
+                        <option value="none">None</option>
+                        <option value="fade" selected>Fade In</option>
+                        <option value="bounce">Bounce</option>
+                        <option value="rotate">Rotate</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="perspective">3D Perspective</label>
+                    <input type="range" id="perspective" min="0" max="100" value="50">
+                </div>
+                
+                <div class="btn-group">
+                    <button id="generate-btn" class="btn">Generate Chart</button>
+                    <button id="random-btn" class="btn btn-secondary">Random Data</button>
+                </div>
+                
+                <div class="export-options">
+                    <button id="export-png" class="btn">Export PNG</button>
+                    <button id="export-jpg" class="btn">Export JPG</button>
+                    <button id="export-svg" class="btn">Export SVG</button>
+                    <button id="export-pdf" class="btn">Export PDF</button>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <h2>Chart Preview</h2>
+                <div id="chart-display">
+                    <div class="spinner" id="loading-spinner"></div>
+                    <canvas id="my3dChart"></canvas>
+                </div>
+                <div id="chart-options" style="margin-top: 1rem;"></div>
+            </div>
+        </section>
+        
+        <!-- Middle Ad Unit -->
+        <div class="ad-container">
+            <!-- Google AdSense Ad Unit -->
+            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+            <!-- ChartGen_Middle_Responsive -->
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                 data-ad-slot="XXXXXXXXXX"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+        
+        <section id="features" class="features">
+            <div class="feature-card">
+                <h3>Easy to Use</h3>
+                <p>Our intuitive interface makes creating professional 3D charts simple, even for beginners. No coding or design experience needed.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Fully Responsive</h3>
+                <p>Charts automatically adjust to any screen size, ensuring your visualizations look great on all devices.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Multiple Export Options</h3>
+                <p>Download your charts in PNG, JPG, SVG, or PDF format for use in presentations, reports, or websites.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Customizable Styles</h3>
+                <p>Choose from various color schemes, animations, and 3D perspectives to match your brand or presentation style.</p>
+            </div>
+        </section>
+        
+        <!-- Bottom Ad Unit -->
+        <div class="ad-container">
+            <!-- Google AdSense Ad Unit -->
+            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+            <!-- ChartGen_Bottom_Leaderboard -->
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                 data-ad-slot="XXXXXXXXXX"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="footer-container">
+            <div class="footer-column">
+                <h3>Product</h3>
+                <ul>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#examples">Examples</a></li>
+                    <li><a href="#pricing">Pricing</a></li>
+                    <li><a href="#updates">Updates</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="#blog">Blog</a></li>
+                    <li><a href="#tutorials">Tutorials</a></li>
+                    <li><a href="#support">Support</a></li>
+                    <li><a href="#api">API</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Company</h3>
+                <ul>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#careers">Careers</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#privacy">Privacy Policy</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2023 3D ChartGen. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+            document.getElementById('navMenu').classList.toggle('show');
+        });
+        
+        // Color scheme toggle
+        document.getElementById('color-scheme').addEventListener('change', function() {
+            const customColorsGroup = document.getElementById('custom-colors-group');
+            if (this.value === 'custom') {
+                customColorsGroup.style.display = 'block';
+            } else {
+                customColorsGroup.style.display = 'none';
+            }
+        });
+        
+        // Chart variables
+        let my3dChart = null;
+        const chartDisplay = document.getElementById('chart-display');
+        const loadingSpinner = document.getElementById('loading-spinner');
+        
+        // Generate chart function
+        function generateChart() {
+            const chartType = document.getElementById('chart-type').value;
+            const chartTitle = document.getElementById('chart-title').value;
+            const chartDataInput = document.getElementById('chart-data').value.trim();
+            const colorScheme = document.getElementById('color-scheme').value;
+            const customColors = document.getElementById('custom-colors').value;
+            const animationType = document.getElementById('animation-type').value;
+            const perspective = parseInt(document.getElementById('perspective').value);
+            
+            // Show loading spinner
+            loadingSpinner.style.display = 'block';
+            chartDisplay.querySelector('canvas').style.display = 'none';
+            
+            // Parse data (simple CSV parser for demo)
+            let labels = [];
+            let data = [];
+            
+            try {
+                if (chartDataInput.startsWith('{') || chartDataInput.startsWith('[')) {
+                    // JSON data
+                    const jsonData = JSON.parse(chartDataInput);
+                    if (Array.isArray(jsonData)) {
+                        jsonData.forEach(item => {
+                            if (typeof item === 'object') {
+                                labels.push(item.label || item.name || '');
+                                data.push(item.value || item.data || 0);
+                            } else {
+                                labels.push('');
+                                data.push(item);
+                            }
+                        });
+                    } else {
+                        // Assume object with labels and data arrays
+                        labels = jsonData.labels || [];
+                        data = jsonData.data || [];
+                    }
+                } else {
+                    // CSV data
+                    const lines = chartDataInput.split('\n');
+                    const headers = lines[0].split(',').map(h => h.trim());
+                    
+                    for (let i = 1; i < lines.length; i++) {
+                        if (lines[i].trim()) {
+                            const values = lines[i].split(',');
+                            labels.push(values[0].trim());
+                            data.push(parseFloat(values[1]) || 0);
+                        }
+                    }
+                }
+            } catch (e) {
+                alert('Error parsing data: ' + e.message);
+                loadingSpinner.style.display = 'none';
+                chartDisplay.querySelector('canvas').style.display = 'block';
+                return;
+            }
+            
+            // Generate colors based on scheme
+            let backgroundColors = [];
+            let borderColors = [];
+            
+            if (colorScheme === 'custom' && customColors) {
+                const colorArray = customColors.split(',').map(c => c.trim());
+                backgroundColors = colorArray;
+                borderColors = colorArray.map(c => c.includes('rgba') ? c : c.replace(')', ',0.8)').replace('rgb', 'rgba'));
+            } else {
+                // Default color schemes
+                const schemes = {
+                    default: ['#4285f4', '#ea4335', '#fbbc05', '#34a853', '#673ab7'],
+                    vibrant: ['#ff5722', '#ff9800', '#ffc107', '#ffeb3b', '#cddc39'],
+                    pastel: ['#a7c4ff', '#ffb3ba', '#ffdfba', '#ffffba', '#baffc9'],
+                    monochrome: ['#666', '#888', '#aaa', '#ccc', '#eee']
+                };
+                
+                const selectedScheme = schemes[colorScheme] || schemes.default;
+                backgroundColors = selectedScheme.slice(0, data.length);
+                borderColors = selectedScheme.slice(0, data.length).map(c => c.includes('rgba') ? c : c.replace(')', ',0.8)').replace('rgb', 'rgba'));
+            }
+            
+            // Animation settings
+            const animationSettings = {
+                none: { animation: { duration: 0 } },
+                fade: { animation: { duration: 1000 } },
+                bounce: { 
+                    animation: { 
+                        duration: 2000,
+                        easing: 'easeOutBounce'
+                    } 
+                },
+                rotate: {
+                    animation: {
+                        duration: 2000,
+                        onProgress: function(animation) {
+                            this.chart.options.rotation = animation.currentStep / animation.numSteps * 360;
+                            this.chart.update();
+                        }
+                    }
+                }
+            };
+            
+            // Destroy previous chart if exists
+            if (my3dChart) {
+                my3dChart.destroy();
+            }
+            
+            // Create new chart
+            const ctx = document.getElementById('my3dChart').getContext('2d');
+            
+            // Chart configuration based on type
+            let config = {
+                type: chartType.replace('3d', ''),
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: chartTitle,
+                        data: data,
+                        backgroundColor: backgroundColors,
+                        borderColor: borderColors,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: chartTitle,
+                            font: {
+                                size: 18
+                            }
+                        },
+                        legend: {
+                            position: 'bottom'
+                        },
+                        tooltip: {
+                            enabled: true
+                        }
+                    },
+                    ...animationSettings[animationType]
+                }
+            };
+            
+            // Add 3D effects
+            if (chartType.includes('3d')) {
+                config.options.plugins['3d'] = {
+                    enabled: true,
+                    alpha: 15,
+                    beta: 15,
+                    depth: 50,
+                    viewDistance: perspective
+                };
+            }
+            
+            // Special configurations for different chart types
+            if (chartType === 'pie3d' || chartType === 'doughnut3d') {
+                config.options.circumference = 180;
+                config.options.rotation = -90;
+            }
+            
+            // Create the chart
+            setTimeout(() => {
+                my3dChart = new Chart(ctx, config);
+                loadingSpinner.style.display = 'none';
+                chartDisplay.querySelector('canvas').style.display = 'block';
+            }, 500);
+        }
+        
+        // Random data generator
+        function generateRandomData() {
+            const chartType = document.getElementById('chart-type').value;
+            let randomData = '';
+            
+            if (chartType === 'scatter3d') {
+                // Generate random 3D scatter data
+                randomData = `x,y,z\n`;
+                for (let i = 0; i < 20; i++) {
+                    randomData += `${Math.floor(Math.random() * 100)},${Math.floor(Math.random() * 100)},${Math.floor(Math.random() * 100)}\n`;
+                }
+            } else {
+                // Generate random labels and values
+                const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+                const count = Math.floor(Math.random() * 6) + 3; // 3-8 data points
+                
+                randomData = `Label,Value\n`;
+                for (let i = 0; i < count; i++) {
+                    randomData += `${months[i]},${Math.floor(Math.random() * 100) + 1}\n`;
+                }
+            }
+            
+            document.getElementById('chart-data').value = randomData;
+            generateChart();
+        }
+        
+        // Export functions
+        function exportChart(format) {
+            if (!my3dChart) {
+                alert('Please generate a chart first');
+                return;
+            }
+            
+            const canvas = document.getElementById('my3dChart');
+            let mimeType, extension;
+            
+            switch (format) {
+                case 'png':
+                    mimeType = 'image/png';
+                    extension = 'png';
+                    break;
+                case 'jpg':
+                    mimeType = 'image/jpeg';
+                    extension = 'jpg';
+                    break;
+                case 'svg':
+                    // For SVG export, we would need a more complex solution
+                    alert('SVG export requires additional libraries. Exporting as PNG instead.');
+                    mimeType = 'image/png';
+                    extension = 'png';
+                    break;
+                case 'pdf':
+                    // For PDF export, we would need a PDF library
+                    alert('PDF export requires additional libraries. Exporting as PNG instead.');
+                    mimeType = 'image/png';
+                    extension = 'png';
+                    break;
+                default:
+                    mimeType = 'image/png';
+                    extension = 'png';
+            }
+            
+            const link = document.createElement('a');
+            link.download = `3d-chart.${extension}`;
+            link.href = canvas.toDataURL(mimeType, 1.0);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+        
+        // Event listeners
+        document.getElementById('generate-btn').addEventListener('click', generateChart);
+        document.getElementById('random-btn').addEventListener('click', generateRandomData);
+        document.getElementById('export-png').addEventListener('click', () => exportChart('png'));
+        document.getElementById('export-jpg').addEventListener('click', () => exportChart('jpg'));
+        document.getElementById('export-svg').addEventListener('click', () => exportChart('svg'));
+        document.getElementById('export-pdf').addEventListener('click', () => exportChart('pdf'));
+        document.getElementById('perspective').addEventListener('input', generateChart);
+        
+        // Generate initial chart
+        window.addEventListener('load', generateChart);
+        
+        // Service worker registration for PWA (optional)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').then(registration => {
+                    console.log('ServiceWorker registration successful');
+                }).catch(err => {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+            });
+        }
+    </script>
+</body>
+</html>
