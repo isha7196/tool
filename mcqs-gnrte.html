@@ -3,11 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Free online tool to generate multiple choice questions (MCQs) from any text or paragraph. Create practice tests instantly.">
-    <meta name="keywords" content="MCQ generator, quiz maker, question generator, test preparation, study tool">
-    <meta name="author" content="MCQ Generator Tool">
-    <title>MCQ Generator Tool - Create Multiple Choice Questions from Text</title>
-    
+    <title>MCQ Generator Tool</title>
     <style>
         :root {
             --primary-color: #4a6bff;
@@ -27,32 +23,24 @@
         }
         
         body {
-            font-family: 'Roboto', sans-serif;
+            font-family: Arial, sans-serif;
             line-height: 1.6;
             color: var(--text-color);
             background-color: #f5f7ff;
+            padding: 20px;
         }
         
         .container {
-            width: 100%;
-            max-width: 1200px;
+            max-width: 1000px;
             margin: 0 auto;
-            padding: 0 15px;
         }
         
         header {
             background-color: white;
             box-shadow: var(--shadow);
-            padding: 15px 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            padding: 15px 20px;
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
         }
         
         .logo {
@@ -66,79 +54,6 @@
             color: var(--accent-color);
         }
         
-        nav ul {
-            display: flex;
-            list-style: none;
-        }
-        
-        nav ul li {
-            margin-left: 20px;
-        }
-        
-        nav ul li a {
-            text-decoration: none;
-            color: var(--text-color);
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-        
-        nav ul li a:hover {
-            color: var(--primary-color);
-        }
-        
-        .hero {
-            text-align: center;
-            padding: 50px 0 30px;
-            background: linear-gradient(135deg, #f5f7ff 0%, #e8ecff 100%);
-        }
-        
-        .hero h1 {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-            color: var(--primary-color);
-        }
-        
-        .hero p {
-            font-size: 1.1rem;
-            color: var(--light-text);
-            max-width: 700px;
-            margin: 0 auto 25px;
-        }
-        
-        .main-content {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 30px;
-            padding: 30px 0 50px;
-        }
-        
-        .ad-unit {
-            background-color: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            padding: 15px;
-            margin-bottom: 20px;
-            text-align: center;
-            min-height: 100px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px dashed var(--border-color);
-        }
-        
-        .ad-unit.horizontal {
-            width: 100%;
-        }
-        
-        .ad-unit.vertical {
-            width: 300px;
-        }
-        
-        .tool-container {
-            flex: 1;
-            min-width: 300px;
-        }
-        
         .tool-card {
             background-color: white;
             border-radius: var(--border-radius);
@@ -147,39 +62,21 @@
             margin-bottom: 30px;
         }
         
-        .tool-card h2 {
-            margin-bottom: 20px;
-            color: var(--primary-color);
-            font-size: 1.5rem;
-        }
-        
         .form-group {
             margin-bottom: 20px;
         }
         
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-        }
-        
-        textarea, input, select {
+        textarea, select {
             width: 100%;
             padding: 12px 15px;
             border: 1px solid var(--border-color);
             border-radius: var(--border-radius);
             font-size: 16px;
-            transition: border-color 0.3s;
         }
         
         textarea {
             min-height: 200px;
             resize: vertical;
-        }
-        
-        textarea:focus, input:focus, select:focus {
-            outline: none;
-            border-color: var(--primary-color);
         }
         
         .btn {
@@ -189,13 +86,7 @@
             padding: 12px 25px;
             border-radius: var(--border-radius);
             font-size: 16px;
-            font-weight: 500;
             cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        
-        .btn:hover {
-            background-color: #3a5bef;
         }
         
         .result-container {
@@ -203,44 +94,37 @@
             display: none;
         }
         
-        .mcq-list {
-            list-style-type: none;
-        }
-        
         .mcq-item {
             background-color: var(--secondary-color);
             border-radius: var(--border-radius);
             padding: 20px;
-            margin-bottom: 15px;
-            border-left: 4px solid var(--primary-color);
+            margin-bottom: 20px;
         }
         
         .mcq-question {
-            font-weight: 500;
-            margin-bottom: 10px;
+            font-weight: bold;
+            margin-bottom: 15px;
         }
         
         .mcq-options {
             list-style-type: none;
-            padding-left: 20px;
+            padding-left: 0;
+            margin-bottom: 15px;
         }
         
         .mcq-options li {
             margin-bottom: 8px;
-            position: relative;
-            padding-left: 25px;
+            padding: 8px;
+            background-color: white;
+            border-radius: 4px;
         }
         
-        .mcq-options li:before {
-            content: "○";
-            position: absolute;
-            left: 0;
-            color: var(--primary-color);
-        }
-        
-        .mcq-options li.correct:before {
-            content: "✓";
-            color: #28a745;
+        .correct-answer {
+            background-color: #e6f7e6;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+            border-left: 3px solid #28a745;
         }
         
         .actions {
@@ -254,161 +138,54 @@
             color: var(--text-color);
             border: 1px solid var(--border-color);
         }
-        
-        .btn-secondary:hover {
-            background-color: #e9ecef;
-        }
-        
-        .btn-accent {
-            background-color: var(--accent-color);
-        }
-        
-        .btn-accent:hover {
-            background-color: #e05555;
-        }
-        
-        footer {
-            background-color: #2c3e50;
-            color: white;
-            padding: 30px 0;
-            text-align: center;
-        }
-        
-        /* How It Works Section */
-        .how-it-works {
-            display: none;
-            margin-top: 20px;
-            padding: 15px;
-            background-color: #f8f9fa;
-            border-radius: var(--border-radius);
-        }
-        
-        .how-it-works.show {
-            display: block;
-        }
-        
-        /* Responsive Styles */
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            nav ul {
-                margin-top: 15px;
-                justify-content: center;
-            }
-            
-            nav ul li {
-                margin: 0 10px;
-            }
-            
-            .hero h1 {
-                font-size: 1.8rem;
-            }
-            
-            .actions {
-                flex-direction: column;
-            }
-            
-            .btn {
-                width: 100%;
-            }
-        }
     </style>
 </head>
 <body>
-    <header>
-        <div class="container header-content">
-            <a href="#" class="logo">MCQ<span>Generator</span></a>
-            <nav>
-                <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#" id="howItWorksLink">How It Works</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
-    
-    <section class="hero">
-        <div class="container">
-            <h1>Generate MCQs from Any Text</h1>
-            <p>Transform your study material into multiple choice questions instantly. Perfect for teachers and students.</p>
-        </div>
-    </section>
-    
     <div class="container">
-        <div class="main-content">
-            <div class="tool-container">
-                <div class="tool-card">
-                    <h2>MCQ Generator Tool</h2>
-                    <form id="mcqForm">
-                        <div class="form-group">
-                            <label for="inputText">Enter your text or paragraph</label>
-                            <textarea id="inputText" placeholder="Paste your text here..."></textarea>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="questionCount">Number of Questions</label>
-                            <select id="questionCount">
-                                <option value="5">5 Questions</option>
-                                <option value="10" selected>10 Questions</option>
-                                <option value="15">15 Questions</option>
-                            </select>
-                        </div>
-                        
-                        <button type="button" id="generateBtn" class="btn">Generate MCQs</button>
-                    </form>
-                    
-                    <div id="howItWorks" class="how-it-works">
-                        <h3>How It Works</h3>
-                        <ol>
-                            <li>Paste your text into the input box</li>
-                            <li>Select the number of questions you want</li>
-                            <li>Click "Generate MCQs" button</li>
-                            <li>Copy or download your questions</li>
-                        </ol>
-                    </div>
-                    
-                    <div class="result-container" id="resultContainer">
-                        <h3>Generated Questions</h3>
-                        <ol class="mcq-list" id="mcqList"></ol>
-                        
-                        <div class="actions">
-                            <button type="button" id="copyBtn" class="btn btn-secondary">Copy to Clipboard</button>
-                            <button type="button" id="downloadBtn" class="btn btn-accent">Download as PDF</button>
-                        </div>
-                    </div>
+        <header>
+            <a href="#" class="logo">MCQ<span>Generator</span></a>
+        </header>
+        
+        <div class="tool-card">
+            <h2>MCQ Generator Tool</h2>
+            <form id="mcqForm">
+                <div class="form-group">
+                    <label for="inputText">Enter your text or paragraph</label>
+                    <textarea id="inputText" placeholder="Paste your text here..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="questionCount">Number of Questions</label>
+                    <select id="questionCount">
+                        <option value="5">5 Questions</option>
+                        <option value="10" selected>10 Questions</option>
+                        <option value="15">15 Questions</option>
+                    </select>
+                </div>
+                
+                <button type="button" id="generateBtn" class="btn">Generate MCQs</button>
+            </form>
+            
+            <div class="result-container" id="resultContainer">
+                <h3>Generated Questions</h3>
+                <div id="mcqList"></div>
+                
+                <div class="actions">
+                    <button type="button" id="copyBtn" class="btn btn-secondary">Copy to Clipboard</button>
                 </div>
             </div>
         </div>
     </div>
     
-    <footer>
-        <div class="container">
-            <p>© 2023 MCQ Generator Tool. All rights reserved.</p>
-        </div>
-    </footer>
-    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const generateBtn = document.getElementById('generateBtn');
             const copyBtn = document.getElementById('copyBtn');
-            const downloadBtn = document.getElementById('downloadBtn');
-            const howItWorksLink = document.getElementById('howItWorksLink');
-            const howItWorks = document.getElementById('howItWorks');
             const inputText = document.getElementById('inputText');
             const questionCount = document.getElementById('questionCount');
             const resultContainer = document.getElementById('resultContainer');
             const mcqList = document.getElementById('mcqList');
             
-            // Toggle How It Works section
-            howItWorksLink.addEventListener('click', function(e) {
-                e.preventDefault();
-                howItWorks.classList.toggle('show');
-            });
-            
-            // Generate MCQs (optimized for speed)
             generateBtn.addEventListener('click', function() {
                 const text = inputText.value.trim();
                 const count = parseInt(questionCount.value);
@@ -418,52 +195,32 @@
                     return;
                 }
                 
-                // Clear previous results
                 mcqList.innerHTML = '';
-                
-                // Start timing
-                const startTime = performance.now();
-                
-                // Generate questions quickly
                 generateQuestions(text, count);
-                
-                // Show results
                 resultContainer.style.display = 'block';
-                
-                // Measure and log time taken
-                const endTime = performance.now();
-                console.log(`MCQ generation took ${(endTime - startTime).toFixed(2)}ms`);
             });
             
-            // Optimized question generation function
             function generateQuestions(text, count) {
-                // Split text into sentences quickly
                 const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 10);
                 const questionsToGenerate = Math.min(count, sentences.length);
-                
-                // Use document fragment for faster DOM manipulation
-                const fragment = document.createDocumentFragment();
                 
                 for (let i = 0; i < questionsToGenerate; i++) {
                     const sentence = sentences[i].trim();
                     if (!sentence) continue;
                     
-                    // Create question element
-                    const li = document.createElement('li');
-                    li.className = 'mcq-item';
+                    const questionDiv = document.createElement('div');
+                    questionDiv.className = 'mcq-item';
                     
-                    // Add question
                     const questionEl = document.createElement('div');
                     questionEl.className = 'mcq-question';
                     questionEl.textContent = `${i+1}. What is the main idea of: "${sentence.substring(0, 80)}..."?`;
-                    li.appendChild(questionEl);
+                    questionDiv.appendChild(questionEl);
                     
-                    // Add options (simplified for speed)
-                    const optionsList = document.createElement('ol');
+                    const optionsList = document.createElement('ul');
                     optionsList.className = 'mcq-options';
                     
-                    // Generate options quickly
-                    const optionTexts = [
+                    // Generate options
+                    const options = [
                         `The text discusses ${getRandomWord(sentence)}`,
                         `It focuses on ${getRandomWord(sentence)}`,
                         `Main point is ${sentence.substring(0, 40)}`,
@@ -471,33 +228,32 @@
                     ];
                     
                     // Shuffle options
-                    shuffleArray(optionTexts);
+                    shuffleArray(options);
                     
-                    // Mark one as correct
-                    optionTexts[0] = `Correct: ${sentence.substring(0, 60)}...`;
-                    
-                    // Create option elements
-                    optionTexts.forEach((text, idx) => {
+                    // Add options to list
+                    options.forEach(text => {
                         const optionLi = document.createElement('li');
-                        if (idx === 0) optionLi.classList.add('correct');
                         optionLi.textContent = text;
                         optionsList.appendChild(optionLi);
                     });
                     
-                    li.appendChild(optionsList);
-                    fragment.appendChild(li);
+                    questionDiv.appendChild(optionsList);
+                    
+                    // Add correct answer separately
+                    const correctAnswerDiv = document.createElement('div');
+                    correctAnswerDiv.className = 'correct-answer';
+                    correctAnswerDiv.innerHTML = `<strong>Correct Answer:</strong> ${sentence.substring(0, 100)}...`;
+                    questionDiv.appendChild(correctAnswerDiv);
+                    
+                    mcqList.appendChild(questionDiv);
                 }
-                
-                mcqList.appendChild(fragment);
             }
             
-            // Helper function to get a random word
             function getRandomWord(sentence) {
                 const words = sentence.split(/\s+/).filter(w => w.length > 3);
                 return words.length > 0 ? words[Math.floor(Math.random() * words.length)] : 'the topic';
             }
             
-            // Fast array shuffle
             function shuffleArray(array) {
                 for (let i = array.length - 1; i > 0; i--) {
                     const j = Math.floor(Math.random() * (i + 1));
@@ -506,7 +262,6 @@
                 return array;
             }
             
-            // Copy to clipboard
             copyBtn.addEventListener('click', function() {
                 const range = document.createRange();
                 range.selectNode(mcqList);
@@ -517,11 +272,6 @@
                 
                 copyBtn.textContent = 'Copied!';
                 setTimeout(() => copyBtn.textContent = 'Copy to Clipboard', 2000);
-            });
-            
-            // Download as PDF
-            downloadBtn.addEventListener('click', function() {
-                alert('PDF download would be implemented with a library like jsPDF in a real application');
             });
         });
     </script>
