@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- [Previous meta tags and SEO elements remain the same] -->
+    
+    <!-- Add this new CSS for the data table enhancements -->
+    <style>
+        /* [Previous CSS remains the same] */
+        
+        /* Enhanced Data Table Styles */
+        .data-table-container {
+            overflow-x: auto;
+            margin-bottom: 15px;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+            min-width: 500px;
+        }
+        
+        .data-table th, .data-table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        
+        .data-table th {
+            background: #f5f5f5;
+            font-weight: 500;
+            position: relative;
+        }
+        
+        .data-table th .column-actions {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            gap: 5px;
+        }
+        
+        .data-table th .column-actions button {
+            background: none;
+            border: none;
+            color: var(--gray);
+            cursor: pointer;
+            font-size: 0.8rem;
+            padding: 2px;
+        }
+        
+        .data-table th .column-actions button:hover {
+            color: var(--primary);
+        }
+        
+        .data-table input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-align: center;
+        }
+        
+        .data-table .remove-row {
+            background: none;
+            border: none;
+            color: #ff6b6b;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        
+        .data-table .remove-row:hover {
+            color: #ff0000;
+        }
+        
+        .table-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .table-controls {
+                flex-direction: column;
+            }
+            
+            .table-controls .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- [Previous header and hero section remain the same] -->
+    
+    <!-- Control Panel -->
+    <div class="control-panel">
+        <!-- [Previous control panel elements remain the same] -->
+    </div>
+    
+    <!-- Chart Display -->
+    <div class="chart-display">
+        <!-- [Previous chart display elements remain the same] -->
+        
+        <!-- Enhanced Data Input Section -->
+        <div class="data-input">
+            <h3>Chart Data</h3>
+            
+            <div class="table-controls">
+                <button id="add-row" class="btn btn-secondary">
+                    <i class="fas fa-plus"></i> Add Row
+                </button>
+                <button id="add-column" class="btn btn-secondary">
+                    <i class="fas fa-plus"></i> Add Column
+                </button>
+                <button id="randomize-data" class="btn btn-secondary">
+                    <i class="fas fa-random"></i> Randomize Data
+                </button>
+            </div>
+            
+            <div class="data-table-container">
+                <table class="data-table" id="data-table">
+                    <thead>
+                        <tr>
+                            <th>Label</th>
+                            <th>
+                                Dataset 1
+                                <div class="column-actions">
+                                    <button class="remove-col" title="Remove column"><i class="fas fa-times"></i></button>
+                                </div>
+                            </th>
+                            <th>
+                                Dataset 2
+                                <div class="column-actions">
+                                    <button class="remove-col" title="Remove column"><i class="fas fa-times"></i></button>
+                                </div>
+                            </th>
+                            <th>
+                                <button id="add-col-btn" class="btn btn-secondary" style="padding: 5px 10px;">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input type="text" value="January"></td>
+                            <td><input type="number" value="10"></td>
+                            <td><input type="number" value="15"></td>
+                            <td><button class="remove-row"><i class="fas fa-times"></i></button></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" value="February"></td>
+                            <td><input type="number" value="20"></td>
+                            <td><input type="number" value="25"></td>
+                            <td><button class="remove-row"><i class="fas fa-times"></i></button></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" value="March"></td>
+                            <td><input type="number" value="15"></td>
+                            <td><input type="number" value="20"></td>
+                            <td><button class="remove-row"><i class="fas fa-times"></i></button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- [Previous export options remain the same] -->
+    </div>
+    
+    <!-- [Previous ad spaces and footer remain the same] -->
+    
+    <script>
+        // [Previous initialization code remains the same until the generateChart function]
+        
+        // Enhanced chart generation function
+        function generateChart() {
+            const ctx = document.getElementById('myChart').getContext('2d');
+            const chartType = document.getElementById('chart-type').value;
+            const chartTitle = document.getElementById('chart-title').value;
+            const animationEnabled = document.getElementById('chart-animation').value === 'true';
+            const rotationAngle = parseInt(document.getElementById('chart-rotation').value);
+            
+            // Get colors from palette
+            const colors = [];
+            document.querySelectorAll('#color-palette input[type="color"]').forEach(input => {
+                colors.push(input.value);
+            });
+            
+            // Get data from table
+            const labels = [];
+            const datasets = [];
+            
+            // Get labels from first column
+            document.querySelectorAll('#data-table tbody tr').forEach(row => {
+                const labelInput = row.querySelector('td:first-child input');
+                if (labelInput) {
+                    labels.push(labelInput.value);
+                }
+            });
+            
+            // Get dataset values from other columns
+            const headerCells = document.querySelectorAll('#data-table thead th:not(:first-child):not(:last-child)');
+            headerCells.forEach((header, index) => {
+                const datasetName = header.textContent.trim();
+                const data = [];
+                
+                document.querySelectorAll('#data-table tbody tr').forEach(row => {
+                    const valueInput = row.querySelector(`td:nth-child(${index + 2}) input`);
+                    if (valueInput) {
+                        data.push(parseFloat(valueInput.value) || 0);
+                    }
+                });
+                
+                datasets.push({
+                    label: datasetName,
+                    data: data,
+                    backgroundColor: colors[index % colors.length],
+                    borderColor: shadeColor(colors[index % colors.length], -20),
+                    borderWidth: 2
+                });
+            });
+            
+            // Destroy previous chart if exists
+            if (myChart) {
+                myChart.destroy();
+            }
+            
+            // Special handling for pie/doughnut charts (single dataset)
+            if (chartType === 'pie' || chartType === 'doughnut') {
+                if (datasets.length > 1) {
+                    showAlert('Pie/Doughnut charts only use the first dataset', 'info');
+                }
+                
+                // Use only the first dataset
+                const pieData = datasets.length > 0 ? datasets[0].data : [];
+                const pieColors = pieData.map((_, i) => colors[i % colors.length]);
+                
+                myChart = new Chart(ctx, {
+                    type: chartType,
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: chartTitle,
+                            data: pieData,
+                            backgroundColor: pieColors,
+                            borderColor: pieColors.map(color => shadeColor(color, -20)),
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: chartTitle
+                            },
+                            legend: {
+                                position: 'right'
+                            }
+                        },
+                        animation: animationEnabled ? {
+                            duration: 1000
+                        } : false
+                    },
+                    plugins: [ChartDataLabels]
+                });
+                
+                return;
+            }
+            
+            // Create new chart for other types
+            const config = {
+                type: chartType,
+                data: {
+                    labels: labels,
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: chartTitle,
+                            font: {
+                                size: 18
+                            }
+                        },
+                        legend: {
+                            position: 'bottom'
+                        },
+                        datalabels: {
+                            display: chartType !== 'line', // Don't show on line charts
+                            color: '#fff',
+                            font: {
+                                weight: 'bold'
+                            }
+                        }
+                    },
+                    animation: animationEnabled ? {
+                        duration: 1000
+                    } : false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                },
+                plugins: [ChartDataLabels]
+            };
+            
+            // Add 3D perspective if supported
+            if (window.Chart3D && chartType !== 'pie' && chartType !== 'doughnut') {
+                config.options.perspective = 800;
+                config.options.rotation = rotationAngle;
+            }
+            
+            myChart = new Chart(ctx, config);
+            
+            showAlert('Chart generated successfully!', 'success');
+        }
+        
+        // [Previous helper functions remain the same until DOMContentLoaded]
+        
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            initColorPalette();
+            
+            // Add event listeners for new table functionality
+            document.getElementById('add-column').addEventListener('click', addDataColumn);
+            document.getElementById('add-col-btn').addEventListener('click', addDataColumn);
+            document.getElementById('randomize-data').addEventListener('click', randomizeData);
+            
+            // Add row button
+            document.getElementById('add-row').addEventListener('click', function() {
+                const tbody = document.querySelector('#data-table tbody');
+                const newRow = document.createElement('tr');
+                const colCount = document.querySelectorAll('#data-table thead th').length - 2; // Exclude label and action columns
+                
+                let rowHtml = '<td><input type="text" value="New Item"></td>';
+                
+                for (let i = 0; i < colCount; i++) {
+                    rowHtml += `<td><input type="number" value="${Math.floor(Math.random() * 100)}"></td>`;
+                }
+                
+                rowHtml += '<td><button class="remove-row"><i class="fas fa-times"></i></button></td>';
+                
+                newRow.innerHTML = rowHtml;
+                tbody.appendChild(newRow);
+                
+                // Add event listener to new remove button
+                newRow.querySelector('.remove-row').addEventListener('click', function() {
+                    if (document.querySelectorAll('#data-table tbody tr').length > 1) {
+                        newRow.remove();
+                    } else {
+                        showAlert('You need at least one data row', 'error');
+                    }
+                });
+            });
+            
+            // Add column function
+            function addDataColumn() {
+                const headerRow = document.querySelector('#data-table thead tr');
+                const bodyRows = document.querySelectorAll('#data-table tbody tr');
+                const colCount = document.querySelectorAll('#data-table thead th').length - 2; // Exclude label and action columns
+                const newColNum = colCount + 1;
+                
+                // Add header cell
+                const newHeader = document.createElement('th');
+                newHeader.innerHTML = `
+                    Dataset ${newColNum + 1}
+                    <div class="column-actions">
+                        <button class="remove-col" title="Remove column"><i class="fas fa-times"></i></button>
+                    </div>
+                `;
+                headerRow.insertBefore(newHeader, headerRow.lastElementChild);
+                
+                // Add cells to each row
+                bodyRows.forEach(row => {
+                    const newCell = document.createElement('td');
+                    newCell.innerHTML = `<input type="number" value="${Math.floor(Math.random() * 100)}">`;
+                    row.insertBefore(newCell, row.lastElementChild);
+                });
+                
+                // Add event listener to new remove column button
+                newHeader.querySelector('.remove-col').addEventListener('click', function() {
+                    if (document.querySelectorAll('#data-table thead th').length > 3) { // Keep at least one data column
+                        const colIndex = Array.from(headerRow.children).indexOf(this.closest('th'));
+                        
+                        // Remove header
+                        this.closest('th').remove();
+                        
+                        // Remove corresponding cells from each row
+                        bodyRows.forEach(row => {
+                            row.removeChild(row.children[colIndex]);
+                        });
+                    } else {
+                        showAlert('You need at least one data column', 'error');
+                    }
+                });
+            }
+            
+            // Randomize data function
+            function randomizeData() {
+                document.querySelectorAll('#data-table tbody td input[type="number"]').forEach(input => {
+                    input.value = Math.floor(Math.random() * 100);
+                });
+                
+                if (myChart) {
+                    generateChart();
+                }
+            }
+            
+            // Add event listeners to existing remove buttons
+            document.querySelectorAll('.remove-row').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    if (document.querySelectorAll('#data-table tbody tr').length > 1) {
+                        this.closest('tr').remove();
+                    } else {
+                        showAlert('You need at least one data row', 'error');
+                    }
+                });
+            });
+            
+            document.querySelectorAll('.remove-col').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    if (document.querySelectorAll('#data-table thead th').length > 3) { // Keep at least one data column
+                        const headerRow = document.querySelector('#data-table thead tr');
+                        const colIndex = Array.from(headerRow.children).indexOf(this.closest('th'));
+                        const bodyRows = document.querySelectorAll('#data-table tbody tr');
+                        
+                        // Remove header
+                        this.closest('th').remove();
+                        
+                        // Remove corresponding cells from each row
+                        bodyRows.forEach(row => {
+                            row.removeChild(row.children[colIndex]);
+                        });
+                    } else {
+                        showAlert('You need at least one data column', 'error');
+                    }
+                });
+            });
+            
+            // [Rest of the initialization code remains the same]
+        });
+    </script>
+</body>
+</html>
