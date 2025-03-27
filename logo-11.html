@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luminar | AI-Powered Logo Designer</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #f59e0b;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #94a3b8;
+            --success: #10b981;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        body {
+            background-color: #f1f5f9;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        /* Glassmorphism container */
+        .glass {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        header {
+            padding: 1.5rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .logo-icon {
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .hero {
+            text-align: center;
+            padding: 4rem 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--gray);
+            margin-bottom: 2rem;
+        }
+        
+        .cta-button {
+            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(99, 102, 241, 0.2);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(99, 102, 241, 0.3);
+        }
+        
+        .tool-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        @media (min-width: 1024px) {
+            .tool-container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        .design-panel {
+            padding: 2rem;
+        }
+        
+        .preview-panel {
+            display: flex;
+            flex-direction: column;
+            padding: 2rem;
+        }
+        
+        .panel-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .panel-title svg {
+            width: 20px;
+            height: 20px;
+            color: var(--primary);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        input[type="text"], select {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            background-color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        input[type="text"]:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+        
+        .color-group {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .color-option {
+            flex: 1;
+        }
+        
+        .color-picker {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .color-picker input[type="color"] {
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            padding: 0;
+        }
+        
+        .color-picker span {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+        
+        .logo-display {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        
+        .logo-canvas-container {
+            width: 300px;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        canvas {
+            max-width: 100%;
+            max-height: 100%;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 1rem;
+            flex: 1;
+            text-align: center;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background-color: white;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #f5f5ff;
+        }
+        
+        .presets {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .preset {
+            height: 80px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: white;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .preset:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 3rem 2rem;
+            margin-top: 4rem;
+        }
+        
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .footer-logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .footer-logo-icon {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        
+        .footer-links h3 {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: var(--gray);
+        }
+        
+        .footer-links ul {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+        
+        .copyright {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .color-group {
+                flex-direction: column;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="glass">
+        <div class="nav-container">
+            <div class="logo">
+                <div class="logo-icon">L</div>
+                <span>Luminar</span>
+            </div>
+            <nav>
+                <button class="cta-button">Get Pro</button>
+            </nav>
+        </div>
+    </header>
+    
+    <main>
+        <section class="hero">
+            <h1>Design Stunning Logos in Seconds</h1>
+            <p>Our AI-powered logo maker helps you create professional, unique brand identities with just a few clicks.</p>
+            <button class="cta-button">Create Your Logo</button>
+        </section>
+        
+        <div class="tool-container">
+            <section class="design-panel glass">
+                <h2 class="panel-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                    Design Options
+                </h2>
+                
+                <div class="form-group">
+                    <label for="logo-text">Brand Name</label>
+                    <input type="text" id="logo-text" placeholder="Your company name" value="Luminar">
+                </div>
+                
+                <div class="form-group">
+                    <label for="logo-tagline">Tagline (Optional)</label>
+                    <input type="text" id="logo-tagline" placeholder="Your tagline">
+                </div>
+                
+                <div class="form-group">
+                    <label for="logo-style">Logo Style</label>
+                    <select id="logo-style">
+                        <option value="minimal">Minimal</option>
+                        <option value="modern" selected>Modern</option>
+                        <option value="vintage">Vintage</option>
+                        <option value="handwritten">Handwritten</option>
+                        <option value="geometric">Geometric</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Color Scheme</label>
+                    <div class="color-group">
+                        <div class="color-option">
+                            <label>Primary</label>
+                            <div class="color-picker">
+                                <input type="color" id="primary-color" value="#6366f1">
+                                <span>#6366f1</span>
+                            </div>
+                        </div>
+                        <div class="color-option">
+                            <label>Secondary</label>
+                            <div class="color-picker">
+                                <input type="color" id="secondary-color" value="#f59e0b">
+                                <span>#f59e0b</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Quick Presets</label>
+                    <div class="presets">
+                        <div class="preset" style="background: linear-gradient(135deg, #6366f1, #8b5cf6);">A</div>
+                        <div class="preset" style="background: linear-gradient(135deg, #f59e0b, #f97316);">B</div>
+                        <div class="preset" style="background: linear-gradient(135deg, #10b981, #059669);">C</div>
+                        <div class="preset" style="background: linear-gradient(135deg, #ec4899, #d946ef);">D</div>
+                        <div class="preset" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);">E</div>
+                        <div class="preset" style="background: linear-gradient(135deg, #64748b, #475569);">F</div>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-primary" id="generate-btn">Generate Logo</button>
+                    <button class="btn btn-secondary" id="randomize-btn">Randomize</button>
+                </div>
+            </section>
+            
+            <section class="preview-panel glass">
+                <h2 class="panel-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                    Logo Preview
+                </h2>
+                
+                <div class="logo-display">
+                    <div class="logo-canvas-container">
+                        <canvas id="logo-canvas" width="600" height="600"></canvas>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-primary" id="download-png">Download PNG</button>
+                    <button class="btn btn-secondary" id="download-svg">Download SVG</button>
+                </div>
+            </section>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="footer-container">
+            <div class="footer-about">
+                <div class="footer-logo">
+                    <div class="footer-logo-icon">L</div>
+                    <span>Luminar</span>
+                </div>
+                <p>AI-powered logo design tool for modern brands and businesses.</p>
+            </div>
+            
+            <div class="footer-links">
+                <h3>Product</h3>
+                <ul>
+                    <li><a href="#">Features</a></li>
+                    <li><a href="#">Pricing</a></li>
+                    <li><a href="#">Templates</a></li>
+                    <li><a href="#">API</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-links">
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Tutorials</a></li>
+                    <li><a href="#">Community</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-links">
+                <h3>Company</h3>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            &copy; 2023 Luminar Logo Design. All rights reserved.
+        </div>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const logoText = document.getElementById('logo-text');
+            const logoTagline = document.getElementById('logo-tagline');
+            const logoStyle = document.getElementById('logo-style');
+            const primaryColor = document.getElementById('primary-color');
+            const secondaryColor = document.getElementById('secondary-color');
+            const generateBtn = document.getElementById('generate-btn');
+            const randomizeBtn = document.getElementById('randomize-btn');
+            const downloadPngBtn = document.getElementById('download-png');
+            const downloadSvgBtn = document.getElementById('download-svg');
+            const canvas = document.getElementById('logo-canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Color presets
+            const colorPresets = [
+                { primary: '#6366f1', secondary: '#8b5cf6' },
+                { primary: '#f59e0b', secondary: '#f97316' },
+                { primary: '#10b981', secondary: '#059669' },
+                { primary: '#ec4899', secondary: '#d946ef' },
+                { primary: '#3b82f6', secondary: '#1d4ed8' },
+                { primary: '#64748b', secondary: '#475569' }
+            ];
+            
+            // Initialize logo
+            function initLogo() {
+                drawLogo(
+                    logoText.value || 'Luminar',
+                    logoTagline.value,
+                    logoStyle.value,
+                    primaryColor.value,
+                    secondaryColor.value
+                );
+            }
+            
+            // Draw logo on canvas
+            function drawLogo(text, tagline, style, primary, secondary) {
+                // Clear canvas
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // Set canvas background
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Draw based on style
+                switch(style) {
+                    case 'minimal':
+                        drawMinimalLogo(text, primary);
+                        break;
+                    case 'modern':
+                        drawModernLogo(text, primary, secondary);
+                        break;
+                    case 'vintage':
+                        drawVintageLogo(text, primary);
+                        break;
+                    case 'handwritten':
+                        drawHandwrittenLogo(text, primary);
+                        break;
+                    case 'geometric':
+                        drawGeometricLogo(text, primary, secondary);
+                        break;
+                    default:
+                        drawModernLogo(text, primary, secondary);
+                }
+                
+                // Add tagline if exists
+                if (tagline) {
+                    ctx.font = 'italic 24px "Georgia", serif';
+                    ctx.fillStyle = '#94a3b8';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(tagline, canvas.width/2, canvas.height/2 + 80);
+                }
+            }
+            
+            // Minimal logo style
+            function drawMinimalLogo(text, color) {
+                ctx.font = 'bold 72px "Inter", sans-serif';
+                ctx.fillStyle = color;
+                ctx.textAlign = 'center';
+                ctx.fillText(text, canvas.width/2, canvas.height/2);
+            }
+            
+            // Modern logo style (with gradient)
+            function drawModernLogo(text, primary, secondary) {
+                // Create gradient
+                const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+                gradient.addColorStop(0, primary);
+                gradient.addColorStop(1, secondary);
+                
+                // Draw text with gradient
+                ctx.font = 'bold 72px "Inter", sans-serif';
+                ctx.fillStyle = gradient;
+                ctx.textAlign = 'center';
+                ctx.fillText(text, canvas.width/2, canvas.height/2);
+                
+                // Add decorative element
+                ctx.beginPath();
+                ctx.arc(canvas.width/2, canvas.height/2 - 50, 10, 0, Math.PI * 2);
+                ctx.fillStyle = secondary;
+                ctx.fill();
+            }
+            
+            // Vintage logo style
+            function drawVintageLogo(text, color) {
+                ctx.font = 'bold 64px "Times New Roman", serif';
+                ctx.fillStyle = color;
+                ctx.textAlign = 'center';
+                
+                // Text shadow for vintage effect
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.2)';
+                ctx.shadowBlur = 10;
+                ctx.shadowOffsetX = 5;
+                ctx.shadowOffsetY = 5;
+                
+                ctx.fillText(text, canvas.width/2, canvas.height/2);
+                
+                // Reset shadow
+                ctx.shadowColor = 'transparent';
+                
+                // Underline
+                ctx.beginPath();
+                ctx.moveTo(canvas.width/2 - 100, canvas.height/2 + 20);
+                ctx.lineTo(canvas.width/2 + 100, canvas.height/2 + 20);
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 3;
+                ctx.stroke();
+            }
+            
+            // Handwritten logo style
+            function drawHandwrittenLogo(text, color) {
+                ctx.font = 'italic 500 68px "Brush Script MT", cursive';
+                ctx.fillStyle = color;
+                ctx.textAlign = 'center';
+                ctx.fillText(text, canvas.width/2, canvas.height/2);
+            }
+            
+            // Geometric logo style
+            function drawGeometricLogo(text, primary, secondary) {
+                // Draw geometric shape
+                ctx.beginPath();
+                ctx.moveTo(canvas.width/2 - 60, canvas.height/2 - 60);
+                ctx.lineTo(canvas.width/2 + 60, canvas.height/2 - 60);
+                ctx.lineTo(canvas.width/2 + 100, canvas.height/2 + 20);
+                ctx.lineTo(canvas.width/2 - 20, canvas.height/2 + 100);
+                ctx.lineTo(canvas.width/2 - 100, canvas.height/2 + 20);
+                ctx.closePath();
+                
+                const gradient = ctx.createLinearGradient(
+                    canvas.width/2 - 100, canvas.height/2 - 60,
+                    canvas.width/2 + 100, canvas.height/2 + 100
+                );
+                gradient.addColorStop(0, primary);
+                gradient.addColorStop(1, secondary);
+                
+                ctx.fillStyle = gradient;
+                ctx.fill();
+                
+                // Draw text
+                ctx.font = 'bold 42px "Inter", sans-serif';
+                ctx.fillStyle = '#ffffff';
+                ctx.textAlign = 'center';
+                ctx.fillText(text, canvas.width/2, canvas.height/2 + 15);
+            }
+            
+            // Randomize logo
+            function randomizeLogo() {
+                const randomTexts = ['Luminar', 'Nova', 'Zenith', 'Aurora', 'Vortex', 'Horizon'];
+                const randomTaglines = ['Illuminate Your Brand', 'Beyond Imagination', 'Design Excellence', 'Creative Solutions', 'Elevate Your Vision'];
+                
+                logoText.value = randomTexts[Math.floor(Math.random() * randomTexts.length)];
+                logoTagline.value = Math.random() > 0.5 ? randomTaglines[Math.floor(Math.random() * randomTaglines.length)] : '';
+                logoStyle.value = ['minimal', 'modern', 'vintage', 'handwritten', 'geometric'][Math.floor(Math.random() * 5)];
+                
+                const randomPreset = colorPresets[Math.floor(Math.random() * colorPresets.length)];
+                primaryColor.value = randomPreset.primary;
+                secondaryColor.value = randomPreset.secondary;
+                
+                // Update color display
+                document.querySelectorAll('.color-picker span').forEach((span, index) => {
+                    span.textContent = index === 0 ? randomPreset.primary : randomPreset.secondary;
+                });
+                
+                generateLogo();
+            }
+            
+            // Generate logo based on inputs
+            function generateLogo() {
+                drawLogo(
+                    logoText.value || 'Luminar',
+                    logoTagline.value,
+                    logoStyle.value,
+                    primaryColor.value,
+                    secondaryColor.value
+                );
+            }
+            
+            // Download as PNG
+            function downloadPng() {
+                const link = document.createElement('a');
+                link.download = `${logoText.value || 'logo'}-luminar.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            }
+            
+            // Download as SVG (simplified)
+            function downloadSvg() {
+                const text = logoText.value || 'Luminar';
+                const style = logoStyle.value;
+                const primary = primaryColor.value;
+                const secondary = secondaryColor.value;
+                
+                let svgContent = '';
+                
+                switch(style) {
+                    case 'minimal':
+                        svgContent = `
+                            <svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 600 600">
+                                <rect width="600" height="600" fill="#ffffff"/>
+                                <text x="300" y="300" font-family="Inter" font-size="72" font-weight="bold" fill="${primary}" text-anchor="middle" dominant-baseline="middle">${text}</text>
+                            </svg>
+                        `;
+                        break;
+                    case 'modern':
+                        svgContent = `
+                            <svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 600 600">
+                                <defs>
+                                    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                        <stop offset="0%" stop-color="${primary}"/>
+                                        <stop offset="100%" stop-color="${secondary}"/>
+                                    </linearGradient>
+                                </defs>
+                                <rect width="600" height="600" fill="#ffffff"/>
+                                <text x="300" y="300" font-family="Inter" font-size="72" font-weight="bold" fill="url(#gradient)" text-anchor="middle" dominant-baseline="middle">${text}</text>
+                                <circle cx="300" cy="250" r="10" fill="${secondary}"/>
+                            </svg>
+                        `;
+                        break;
+                    default:
+                        svgContent = `
+                            <svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 600 600">
+                                <rect width="600" height="600" fill="#ffffff"/>
+                                <text x="300" y="300" font-family="Inter" font-size="72" font-weight="bold" fill="${primary}" text-anchor="middle" dominant-baseline="middle">${text}</text>
+                            </svg>
+                        `;
+                }
+                
+                const blob = new Blob([svgContent], { type: 'image/svg+xml' });
+                const link = document.createElement('a');
+                link.download = `${text}-luminar.svg`;
+                link.href = URL.createObjectURL(blob);
+                link.click();
+            }
+            
+            // Event listeners
+            generateBtn.addEventListener('click', generateLogo);
+            randomizeBtn.addEventListener('click', randomizeBtn);
+            downloadPngBtn.addEventListener('click', downloadPng);
+            downloadSvgBtn.addEventListener('click', downloadSvg);
+            
+            // Color picker updates
+            primaryColor.addEventListener('input', function() {
+                document.querySelectorAll('.color-picker span')[0].textContent = this.value;
+            });
+            
+            secondaryColor.addEventListener('input', function() {
+                document.querySelectorAll('.color-picker span')[1].textContent = this.value;
+            });
+            
+            // Preset click handlers
+            document.querySelectorAll('.preset').forEach((preset, index) => {
+                preset.addEventListener('click', function() {
+                    primaryColor.value = colorPresets[index].primary;
+                    secondaryColor.value = colorPresets[index].secondary;
+                    
+                    // Update color display
+                    document.querySelectorAll('.color-picker span')[0].textContent = colorPresets[index].primary;
+                    document.querySelectorAll('.color-picker span')[1].textContent = colorPresets[index].secondary;
+                    
+                    generateLogo();
+                });
+            });
+            
+            // Initialize
+            initLogo();
+        });
+    </script>
+</body>
+</html>
